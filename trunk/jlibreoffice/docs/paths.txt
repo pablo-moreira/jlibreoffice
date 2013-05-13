@@ -1,0 +1,68 @@
+-------------------
+-- Br-Office 2.2 --
+-------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program
+
+	LIBS
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes; 
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program
+
+-------------------
+-- Br-Office 2.4 --
+-------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program
+
+	LIBS
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes;
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program
+
+-------------------
+-- Br-Office 3.0 --
+-------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	LIBS
+	- C:\Arquivos de programas\BrOffice.org 3\URE\bin;
+	- C:\Arquivos de programas\BrOffice.org 3\Basis\program
+
+-------------------
+-- Br-Office 3.2 --
+-------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	LIBS
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\bin;
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+---------------------
+-- LibreOffice 3.3 --
+---------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\LibreOffice 3\program
+
+	PATH
+	 - C:\Arquivos de programas\LibreOffice 3\URE\bin
+	 - C:\Arquivos de programas\LibreOffice 3\program
+
+---------------------
+-- LibreOffice 4.0 --
+---------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\LibreOffice 4.0\program
+
+	PATH
+	 - C:\Arquivos de programas\LibreOffice 4.0\URE\bin
+	 - C:\Arquivos de programas\LibreOffice 4.0\program	 
+
+// Windows Libs
+msvcr70.dll		
+msvcr71.dll		
+uwinapi.dll 	
+jawt.dll		
+officebean.dll	
+sal3.dll
+jpipe.dll

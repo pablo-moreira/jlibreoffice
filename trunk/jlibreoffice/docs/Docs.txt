@@ -1,0 +1,44 @@
+Passo a passo para a criação do projeto.
+
+Peguei as versões mais atualizadas dos jars: ridl.jar, unoil.jar, unoloader.jar e adicionei no buildpath do projeto.
+Peguei o codigo fonte do projeto JURT e adicionei no projeto para alterar a classe PipeConnection.java para pegar o classloader modificado.
+Peguei o codigo fonte do projeto BEAN o adicionei no projeto para alterar a classe LocalOfficeConnection para pegar o classloader modificado. 
+
+##################
+## DEPENDÊNCIAS ##
+##################
+
+	- ridl.jar
+	- unoil.jar
+	- unoloader.jar
+
+#####################
+## COMPATIBILIDADE ##
+#####################
+
+MICROSOFT WINDOWS XP PROFESSIONAL
+ - BrOffice 2.4.0
+ - BrOffice 3.0.0
+ - BrOffice 3.0.1
+ - BrOffice 3.1.0
+ - BrOffice 3.1.1
+ - BrOffice 3.2.0
+ - BrOffice 3.2.1
+ - LibreOffice 3.3.0
+ - LibreOffice 4.0
+
+
+MICROSOFT WINDOWS VISTA BUSINESS 32 BITS
+ - BrOffice 2.4.0
+ - BrOffice 3.0.0
+ - BrOffice 3.0.1
+ - BrOffice 3.1.0
+ - BrOffice 3.1.1
+ - BrOffice 3.2.0
+ - BrOffice 3.2.1
+
+LINUX KUBUNTU 9.10 
+ - OpenOffice 3.0.0
+
+LINUX UBUNTU 10.04
+ - OpenOffice 3.2.0
