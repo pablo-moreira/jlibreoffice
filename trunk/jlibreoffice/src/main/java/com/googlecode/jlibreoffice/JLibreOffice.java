@@ -210,22 +210,18 @@ public class JLibreOffice {
 			InstallationConfigs.iniciar();
 
 			// !!! Importante - Faz nao aparecer tela de restauracao de arquivos
-			System.setProperty("com.sun.star.officebean.Options", "-norestore");
+			System.setProperty("com.sun.star.officebean.Options", "--norestore");
 			
 			// !!! Importante - Corrige o bug do linux que nao deixa digitar
 			if (InstallationConfigs.isOsLinux()) {
 				System.out.println("\nSISTEMA OPERACIONAL: \n - Linux");
-				System.setProperty("sun.awt.xembedserver", "true");
+				//System.setProperty("sun.awt.xembedserver", "true");
 			}
 			else {
 				System.out.println("\nSistema Operacional: \n - Windows");
-			}
-			
-			
+			}         	
 			
 			o3Bean = new OOoBean();
-			
-			//o3Bean.startOOoConnection ("uno:socket,host=localhost,port=2002;urp;StarOffice.ServiceManager");
 			
 			o3Bean.setLayout(new BorderLayout());
 			o3Bean.setMenuBarVisible(false);

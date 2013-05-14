@@ -713,7 +713,7 @@ public class LocalOfficeConnection
             String[] cmdArray = new String[nSizeCmdArray];
 
             // read UNO_PATH environment variable to get path to soffice binary
-            String unoPath = System.getenv("UNO_PATH");
+            String unoPath = InstallationConfigs.getInstance().getUnoPath();
             if (unoPath == null)
                 throw new java.io.IOException( "UNO_PATH environment variable is not set (required system path to the office program directory)" );
 
