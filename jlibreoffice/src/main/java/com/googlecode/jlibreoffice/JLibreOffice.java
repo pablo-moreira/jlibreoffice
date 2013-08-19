@@ -113,7 +113,7 @@ public class JLibreOffice {
 
 	public void open(String url) throws Exception	{
 
-		try {		
+		try {
             //Get the office process to load the URL
             o3Bean.loadFromURL(url, null);         
             o3Bean.aquireSystemWindow();
@@ -227,7 +227,7 @@ public class JLibreOffice {
 			o3Bean.setMenuBarVisible(false);
 			o3Bean.setStandardBarVisible(false);
 			o3Bean.setToolBarVisible(false);
-			
+
 			frame.add(o3Bean, BorderLayout.CENTER);
 		
 			System.out.println("\n------------------------------------------------------");
