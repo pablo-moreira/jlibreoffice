@@ -9,8 +9,6 @@ import javax.swing.JFrame;
 import com.googlecode.jlibreoffice.installation.InstallationConfigs;
 import com.sun.star.awt.XWindow;
 import com.sun.star.beans.PropertyValue;
-import com.sun.star.comp.beans.NoConnectionException;
-import com.sun.star.comp.beans.OOoBean;
 import com.sun.star.frame.XDispatchHelper;
 import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XFrame;
@@ -118,23 +116,8 @@ public class JLibreOffice {
             o3Bean.loadFromURL(url, null);         
             o3Bean.aquireSystemWindow();
 		}
-		catch (com.sun.star.comp.beans.SystemWindowException e)
-      	{
-			System.err.println("OOoBeanViewer.1:" + e.getMessage());
-   			e.printStackTrace();
-   			
-   			throw new Exception(e.getMessage());
-		}
-		catch (com.sun.star.comp.beans.NoConnectionException e)
-		{
-			System.err.println("OOoBeanViewer.2:" + e.getMessage());
-			e.printStackTrace();
-			
-			throw new Exception(e.getMessage());
-		}
-		catch (Exception e)
-		{
-			System.err.println("OOoBeanViewer.3:" + e.getMessage());
+		catch (Exception e)	{
+			System.err.println("JLibreOffice.open:" + e.getMessage());
 			e.printStackTrace();			
 			throw new Exception(e.getMessage());
 		}
@@ -206,6 +189,8 @@ public class JLibreOffice {
 	@SuppressWarnings("deprecation")
 	private void initialize() {
 
+		System.out.println("TESTE - JAVA_UNO : "  + System.getenv("JAVA_UNO"));
+		
 		try {
 			InstallationConfigs.iniciar();
 
