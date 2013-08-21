@@ -15,35 +15,14 @@ import com.sun.star.lib.loader.InstallationFinder;
 public class InstallationConfigs {
 
 	private static InstallationConfigs instance;
-	
-	private static final String OS_LINUX = "Linux";	
-	private static final String OS_WINDOWS = "Windows";
-	private static final String PROPERTY_OS_NAME = "os.name";
-			
-	public static String getEnvVar( String envVar ) {        
 
-        String path = null;
-        
-        try {
-            path = System.getenv(envVar);
-        } 
-        catch ( SecurityException e ) {} 
-        catch ( java.lang.Error err ) {}
-        return path;
-    }
-		
+	private URLClassLoader classLoader;
+	private String unoPath; 
+	
 	public static InstallationConfigs getInstance() {
 		return instance;
 	}	
-	
-	private static String getOsName() {
-		return System.getProperty(PROPERTY_OS_NAME);
-	}
-	
-	public static String getTmpDirPath() {		
-		return System.getProperty("java.io.tmpdir");
-	}
-	    
+			    
     public static void iniciar() throws Exception {	
 
     	if (instance == null) {
@@ -63,17 +42,6 @@ public class InstallationConfigs {
 			instance = new InstallationConfigs(unoPath);	
     	}
 	}	
-	
-	public static boolean isOsLinux() {
-		return getOsName().startsWith(OS_LINUX);
-	}
-
-	public static boolean isOsWindows() {
-		return getOsName().startsWith(OS_WINDOWS);
-	}
-
-	private URLClassLoader classLoader;
-	private String unoPath; 
 
 	private InstallationConfigs(String unoPath) throws Exception {
 		
@@ -82,7 +50,7 @@ public class InstallationConfigs {
 		String unoPathRoot = new File(unoPath).getParent();
 		
 		// Verifica qual e o SO
-		if (isOsWindows()) {
+		if (SystemUtils.isOsWindows()) {
 
 			List<LibraryPath> libs = new ArrayList<LibraryPath>(); 
 			
@@ -105,7 +73,7 @@ public class InstallationConfigs {
 			
 			initializeClassloader(libs, dirs);
 		}
-		else if (isOsLinux()) {
+		else if (SystemUtils.isOsLinux()) {
 						
 			List<LibraryPath> libs = new ArrayList<LibraryPath>(); 
 			
