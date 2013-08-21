@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.googlecode.jlibreoffice.util.SystemUtils;
 import com.sun.star.lib.loader.InstallationFinder;
 
 public class InstallationConfigs {
@@ -45,17 +46,22 @@ public class InstallationConfigs {
 	    
     public static void iniciar() throws Exception {	
 
-		// Verifica se consegue encontrar o caminho de instalacao
-		String unoPath = InstallationFinder.getPath();
-				
-		// Verifica se encontrou o uno_path
-		if (unoPath == null || unoPath.equals("")) {
-			throw new Exception("O caminho para o diretório de instalação do LibreOffice não foi encontrado!");
-		}
-		
-		System.out.println("\nUNO_PATH ENCONTRADO:\n - " + unoPath);
+    	if (instance == null) {
+    		
+			// Verifica se consegue encontrar o caminho de instalacao
+			String unoPath = InstallationFinder.getPath();
+											
+			// Verifica se encontrou o uno_path
+			if (unoPath == null || unoPath.equals("")) {
+				throw new Exception("O caminho para o diretório de instalação do LibreOffice não foi encontrado!");
+			}
 			
-		instance = new InstallationConfigs(unoPath);
+			System.out.println("\nUNO_PATH ENCONTRADO:\n - " + unoPath);
+			
+			SystemUtils.putEnvVar("UNO_PATH", unoPath);
+				
+			instance = new InstallationConfigs(unoPath);	
+    	}
 	}	
 	
 	public static boolean isOsLinux() {
