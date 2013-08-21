@@ -60,23 +60,14 @@ public class JLibreOfficeTestDireto {
             File fileProg = new File(s + "/program");
             m_loader.addResourcePath(fileProg.toURI().toURL());
 			
-            Class beanClass = m_loader.loadClass("com.sun.star.comp.beans.OOoBean");
-            Object m_objBean = beanClass.newInstance();
             
-            frame.add((java.awt.Container)m_objBean, BorderLayout.CENTER);
+            OOoBeanProxy bean = new OOoBeanProxy(m_loader);   
+            bean.insertInto(frame);
             
             frame.setVisible(true);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
-			Object arProp = Array.newInstance(
-                m_loader.loadClass("com.sun.star.beans.PropertyValue"), 1);
-            Class<? extends Object> clazz = arProp.getClass();
-
-            Method methLoad = beanClass.getMethod(
-                "loadFromURL", new Class[] {
-                    String.class, arProp.getClass() });
-
-            methLoad.invoke(m_objBean, new Object[] {"private:factory/swriter", null});
+            bean.loadFromURL();
 
             frame.validate();
 			

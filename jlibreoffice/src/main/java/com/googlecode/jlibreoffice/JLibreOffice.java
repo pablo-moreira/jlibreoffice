@@ -7,6 +7,7 @@ import java.net.URLDecoder;
 import javax.swing.JFrame;
 
 import com.googlecode.jlibreoffice.installation.InstallationConfigs;
+import com.googlecode.jlibreoffice.util.SystemUtils;
 import com.sun.star.awt.XWindow;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.XDispatchHelper;
@@ -101,7 +102,7 @@ public class JLibreOffice {
 	public static final String UNO_UNDO =  ".uno:Undo";
 	public static final String UNO_EXPORT_DIRECT_TO_PDF = ".uno:ExportDirectToPDF";
 	
-	private OOoBean o3Bean;
+	private OOoBeanProxy o3Bean;
 	private JFrame frame;
 
 	public JLibreOffice(JFrame frame) {
@@ -182,7 +183,7 @@ public class JLibreOffice {
 		}
 	}
 	
-	public OOoBean getO3Bean() {
+	public OOoBeanProxy getO3Bean() {
 		return o3Bean;
 	}
 	
@@ -198,7 +199,7 @@ public class JLibreOffice {
 			System.setProperty("com.sun.star.officebean.Options", "--norestore");
 			
 			// !!! Importante - Corrige o bug do linux que nao deixa digitar
-			if (InstallationConfigs.isOsLinux()) {
+			if (SystemUtils.isOsLinux()) {
 				System.out.println("\nSISTEMA OPERACIONAL: \n - Linux");
 				//System.setProperty("sun.awt.xembedserver", "true");
 			}
@@ -206,12 +207,12 @@ public class JLibreOffice {
 				System.out.println("\nSistema Operacional: \n - Windows");
 			}         	
 			
-			o3Bean = new OOoBean();
+			o3Bean = new OOoBeanProxy();
 			
-			o3Bean.setLayout(new BorderLayout());
-			o3Bean.setMenuBarVisible(false);
-			o3Bean.setStandardBarVisible(false);
-			o3Bean.setToolBarVisible(false);
+			//o3Bean.setLayout(new BorderLayout());
+			//o3Bean.setMenuBarVisible(false);
+			//o3Bean.setStandardBarVisible(false);
+			//o3Bean.setToolBarVisible(false);
 
 			frame.add(o3Bean, BorderLayout.CENTER);
 		
