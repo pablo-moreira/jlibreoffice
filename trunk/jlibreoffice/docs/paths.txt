@@ -58,6 +58,27 @@
 	 - C:\Arquivos de programas\LibreOffice 4.0\URE\bin
 	 - C:\Arquivos de programas\LibreOffice 4.0\program	 
 
+
+
+
+
+LibreOffice 3.3
+		            new URL(officeURL + "Basis\\program\\classes\\officebean.jar"),
+		            new URL(officeURL + "Basis\\program\\classes\\unoil.jar"),
+		            new URL(officeURL + "URE\\java\\jurt.jar"),
+		            new URL(officeURL + "URE\\java\\ridl.jar"),		            
+		            new URL(officeURL + "URE\\java\\java_uno.jar"),
+		            new URL(officeURL + "URE\\java\\juh.jar")
+
+LibreOffice 4.0.1
+
+		            new URL(officeURL + "program\\classes\\officebean.jar"),
+		            new URL(officeURL + "program\\classes\\unoil.jar"),
+		            new URL(officeURL + "URE\\java\\jurt.jar"),
+		            new URL(officeURL + "URE\\java\\ridl.jar"),		            
+		            new URL(officeURL + "URE\\java\\java_uno.jar"),
+		            new URL(officeURL + "URE\\java\\juh.jar")
+
 // Windows Libs
 msvcr70.dll		
 msvcr71.dll		
