@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 import com.googlecode.jlibreoffice.installation.InstallationConfigs;
 import com.googlecode.jlibreoffice.util.CustomURLClassLoader;
+import com.googlecode.jlibreoffice.util.SystemUtils;
 
 
 public class JLibreOfficeTestDireto {
@@ -35,7 +36,7 @@ public class JLibreOfficeTestDireto {
             
             URL[] arURL;
             
-            if (InstallationConfigs.isOsWindows()) {
+            if (SystemUtils.isOsWindows()) {
             	arURL = new URL[] {            
 		            new URL(officeURL + "program\\classes\\officebean.jar"),
 		            new URL(officeURL + "program\\classes\\unoil.jar"),
