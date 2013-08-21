@@ -15,10 +15,22 @@ public class JLibreOfficeTest {
 		
 		JLibreOffice jLibreOffice = new JLibreOffice(frame);
 		
+		try {
+			jLibreOffice.newWriterDocument();
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		catch (Error e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		jLibreOffice.newWriterDocument();
+		
 	}
 
 }
