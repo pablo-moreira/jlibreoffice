@@ -1,10 +1,10 @@
 package com.googlecode.jlibreoffice;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Frame;
+import java.awt.LayoutManager;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 public class OOoBeanProxy {
 
@@ -14,8 +14,6 @@ public class OOoBeanProxy {
 
 	public OOoBeanProxy(ClassLoader classLoader) throws Exception {
 		
-		super();
-		
 		this.classLoader = classLoader;
 		
 		try {
@@ -23,44 +21,191 @@ public class OOoBeanProxy {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("A classe OOoBean n„o foi encontrada, mensagem interna: " + e.getMessage());
+			throw new Exception("A classe OOoBean n√£o foi encontrada, mensagem interna: " + e.getMessage());
 		}
 		
-		bean = beanClass.newInstance();
-	}	
-		
-	public boolean isOOoConnected() {		
 		try {
-			Method method = beanClass.getMethod("isOOoConnected", new Class[]{});
-		
-			Object resultado = method.invoke(bean, new Object[] {});
-			
-			return (Boolean) resultado;
+			bean = beanClass.newInstance();
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Erro ao executar OOoBean.isOOoConnected, mensagem interna: " + e.getMessage());
-		}		
+			e.printStackTrace();
+			throw new Exception("Erro ao instanciar um objeto da classe OOoBean, mensagem interna: " + e.getMessage());
+		}
+	}	
+
+
+	public void stopOOoConnection() {
+		try {
+			invoke(bean, "stopOOoConnection");
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.stopOOoConnection(), mensagem interna: " + e.getMessage());
+		}
 	}
 	
-	public void loadFromURL() {
+	public void setMenuBarVisible(boolean value) {
+		try {			  
+			invoke(bean, "setMenuBarVisible", value);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.setMenuBarVisible(), mensagem interna: " + e.getMessage());
+		}
+	}
+	
+	public void setStandardBarVisible(boolean value) {
+		try {
+			invoke(bean, "setStandardBarVisible", value);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.setStandardBarVisible(), mensagem interna: " + e.getMessage());
+		}
+	}
+	
+	public void setToolBarVisible(boolean value) {
+		try {
+			invoke(bean, "setToolBarVisible", value);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.setToolBarVisible(), mensagem interna: " + e.getMessage());
+		}
+	}
 		
+	public boolean isOOoConnected() {		
+		try {			
+			return (Boolean) invoke(bean, "isOOoConnected");
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.isOOoConnected(), mensagem interna: " + e.getMessage());
+		}
+	}
+	
+	public Object getDocument() {
+		try {
+			return invoke(bean, "getDocument");
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.getDocument(), mensagem interna: " + e.getMessage());
+		}
+	}
+	
+	public void loadFromURL(String url) {
 		try {
 			Object arProp = Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1);
-            
-			//Class<? extends Object> clazz = arProp.getClass();
 
             Method methLoad = beanClass.getMethod("loadFromURL", new Class[] { String.class, arProp.getClass() });
 
-            methLoad.invoke(bean, new Object[] {"private:factory/swriter", null});
+            methLoad.invoke(bean, new Object[] { url, null });
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Erro ao executar OOoBean.loadFromURL, mensagem interna: " + e.getMessage());
-		}		
+			throw new RuntimeException("Erro ao executar OOoBean.loadFromURL(), mensagem interna: " + e.getMessage());
+		}
 	}
 	
-	public void insertInto(Container container) {
-		container.add((java.awt.Container) bean, BorderLayout.CENTER);
+	public void aquireSystemWindow() {
+		try {
+			invoke(bean, "aquireSystemWindow");
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.aquireSystemWindow(), mensagem interna: " + e.getMessage());
+		}
 	}
 	
+	public Container getContainer() {
+		return (Container) bean;
+	}
 	
+	private Object invoke(Object object, String method, boolean value) throws Exception {
+		
+		Method m;
+		
+		try {
+			m = object.getClass().getMethod(method, boolean.class);
+			return m.invoke(object, value);
+		}
+		catch (Exception e) {}
+		
+		try {
+			m = object.getClass().getDeclaredMethod(method, boolean.class);
+			return m.invoke(object, value);
+		}
+		catch (Exception e) {
+			throw e;
+		}	
+	}
+	
+	private Object invoke(Object object, String method, Object ... params) throws Exception {
+		
+		Class<?>[] parameterTypes = new Class<?>[params.length];
+		
+		int i=0;
+		for (Object param : params) {
+			parameterTypes[i++] = param.getClass();
+		}
+		
+		Method m;
+		
+		try {
+			m = object.getClass().getMethod(method, parameterTypes);
+			return m.invoke(object, params);
+		}
+		catch (Exception e) {}
+		
+		try {
+			m = object.getClass().getDeclaredMethod(method, parameterTypes);
+			return m.invoke(object, params);
+		}
+		catch (Exception e) {
+			throw e;
+		}
+	}
+		
+	public void execute(String cmd, Object[] propertyValues) throws Exception {
+		
+		try {
+			/*
+			com.sun.star.frame.XDispatchHelper
+			com.sun.star.frame.XDispatchProvider
+			com.sun.star.frame.XFrame
+			com.sun.star.uno.UnoRuntime
+			com.sun.star.uno.XComponentContext
+			
+			XComponentContext xCc = o3Bean.getOOoConnection().getComponentContext();
+			XFrame xFrame = o3Bean.getDocument().getCurrentController().getFrame();
+			Object dispatchHelperObject = xCc.getServiceManager().createInstanceWithContext("com.sun.star.frame.DispatchHelper", xCc);
+			XDispatchHelper xDh = (XDispatchHelper) UnoRuntime.queryInterface(XDispatchHelper.class, dispatchHelperObject);
+			XDispatchProvider xDispatchProvider = (XDispatchProvider) UnoRuntime.queryInterface(XDispatchProvider.class, xFrame);
+			XWindow xWindow = xFrame.getComponentWindow();
+
+			xWindow.setFocus();
+			xDh.executeDispatch(xDispatchProvider, cmd, "", 0, propertyValue);
+			*/
+			
+			Object xCc = invoke(invoke(bean, "getOOoConnection"), "getComponentContext");					
+			Object xFrame = invoke(invoke(getDocument(),"getCurrentController"),"getFrame");
+			Object dispatchHelperObject = invoke(invoke(xCc, "getServiceManager"), "createInstanceWithContext", "com.sun.star.frame.DispatchHelper", xCc);
+
+			Class<?> dispatchHelperClass = getClass().getClassLoader().loadClass("com.sun.star.frame.XDispatchHelper");
+			Class<?> dispatchProviderClass = getClass().getClassLoader().loadClass("com.sun.star.frame.XDispatchProvider");
+
+			Class<?> unoRuntimeClass = getClass().getClassLoader().loadClass("com.sun.star.uno.UnoRuntime");
+			
+			Object xDh = unoRuntimeClass.getMethod("queryInterface", Type.class, Object.class).invoke(dispatchHelperClass, dispatchHelperObject);
+			Object xDispatchProvider = unoRuntimeClass.getMethod("queryInterface", Type.class, Object.class).invoke(dispatchProviderClass, xFrame);
+			Object xWindow = invoke(xFrame, "getComponentWindow");
+
+			invoke(xWindow, "setFocus");
+			invoke(xDh, "executeDispatch", xDispatchProvider, cmd, "", 0, propertyValues);
+		}
+		catch (Exception e) {
+			throw new Exception(e.getMessage());			
+		}
+	}
+
+	public void setLayout(LayoutManager layout) {
+		getContainer().setLayout(layout);
+	}
+
+	public void setVisible(boolean value) {
+		getContainer().setVisible(value);
+	}
 }
