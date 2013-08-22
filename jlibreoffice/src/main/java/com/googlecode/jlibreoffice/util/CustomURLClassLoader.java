@@ -2,7 +2,6 @@ package com.googlecode.jlibreoffice.util;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class CustomURLClassLoader extends URLClassLoader {
         super( urls , urlClassLoader );
     }
 
-    protected Class findClass( String name ) throws ClassNotFoundException {
+    protected Class<?> findClass( String name ) throws ClassNotFoundException {
         // This is only called via this.loadClass -> super.loadClass ->
         // this.findClass, after this.loadClass has already called
         // super.findClass, so no need to call super.findClass again:
@@ -23,12 +22,9 @@ public class CustomURLClassLoader extends URLClassLoader {
 //        return super.findClass(name);
     }
 
-
-
-    protected Class loadClass( String name, boolean resolve )
-        throws ClassNotFoundException
+    protected Class<?> loadClass( String name, boolean resolve ) throws ClassNotFoundException
     {
-        Class c = findLoadedClass( name );
+        Class<?> c = findLoadedClass( name );
         if ( c == null ) {
             try {
                 c = super.findClass( name );
@@ -60,7 +56,6 @@ public class CustomURLClassLoader extends URLClassLoader {
             return result;
         }
 
-        URI uri = null;
         for (URL u : resourcePaths) {
             if (u.getProtocol().startsWith("file")){
                 try {
