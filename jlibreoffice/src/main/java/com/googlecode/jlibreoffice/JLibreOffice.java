@@ -141,16 +141,6 @@ public class JLibreOffice {
 	public void execute(String cmd, Object[] propertyValues) throws Exception {
 		bean.execute(cmd, propertyValues);
 	}
-
-	public void closeConnection() {
-		// Verifica se ela foi aberta
-		if (bean != null) {
-			if (bean.isOOoConnected()) {
-				bean.stopOOoConnection();
-			}
-			bean.setVisible(false);
-		}
-	}
 	
 	public OOoBeanProxy getBean() {
 		return bean;
@@ -170,16 +160,28 @@ public class JLibreOffice {
 			bean.setToolBarVisible(false);
 		
 			System.out.println("\n------------------------------------------------------");
-			System.out.println(" A conexao com o Open Office foi carregada com sucesso!");
+			System.out.println(" A conexao com o LibreOffice foi carregada com sucesso!");
 			System.out.println("-------------------------------------------------------");
 		}
 		catch (Exception e) {
 			bean = null;
 			System.out.println("\n------------------------------------------------------");
-			System.out.println(" Erro ao iniciar a conexão com o Open Office !");
+			System.out.println(" Erro ao iniciar a conexao com o LibreOffice!");
 			System.out.println("  - " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
 			System.out.println("--------------------------------------------------------");
 			e.printStackTrace();
+		}
+	}
+	
+	public void closeConnection() {
+		if (bean != null) {
+			if (bean.isOOoConnected()) {
+				bean.stopOOoConnection();
+				System.out.println("\n------------------------------------------------------");
+				System.out.println(" A conexao com o LibreOffice foi fechada com sucesso!");
+				System.out.println("-------------------------------------------------------");
+			}
+			bean.setVisible(false);
 		}
 	}
 	
