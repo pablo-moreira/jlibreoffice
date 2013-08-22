@@ -1,35 +1,70 @@
 package com.googlecode.jlibreoffice;
 
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.BorderLayout;
+import java.io.File;
+import java.net.URL;
 
 import javax.swing.JFrame;
 
 import com.googlecode.jlibreoffice.installation.InstallationConfigs;
+import com.googlecode.jlibreoffice.util.CustomURLClassLoader;
+import com.googlecode.jlibreoffice.util.SystemUtils;
 
 
 public class JLibreOfficeTest {
 	
 	public static void main(String[] args) throws Exception {
 	
-		 InstallationConfigs.iniciar();
-		
-		HashMap<String,String> newenv = new HashMap<String,String>();
-		newenv.putAll(System.getenv());
-		newenv.put("JAVA_UNO",InstallationConfigs.getInstance().getUnoPath());
-		
-		setEnv(newenv);
-		
+		InstallationConfigs.iniciar();
+				
 		JFrame frame = new JFrame();
 		frame.setTitle("Teste");
 		frame.setSize(800, 600);
-		
-		JLibreOffice jLibreOffice = new JLibreOffice(frame);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		try {
-			jLibreOffice.newWriterDocument();
+			String unoPath = InstallationConfigs.getInstance().getUnoPath();
+			String s = unoPath.replace("program", "");
+			
+            System.out.println("sun.awt.noxembed: " + System.getProperty("sun.awt.noxembed"));
+            System.setProperty("sun.awt.xembedserver", "true");
+
+            File f = new File(s);
+            URL url = f.toURI().toURL();
+            String officeURL = url.toString();
+            
+            URL[] arURL;
+            
+            if (SystemUtils.isOsWindows()) {
+            	arURL = new URL[] {            
+		            new URL(officeURL + "program\\classes\\officebean.jar"),
+		            new URL(officeURL + "program\\classes\\unoil.jar"),
+		            new URL(officeURL + "URE\\java\\jurt.jar"),
+		            new URL(officeURL + "URE\\java\\ridl.jar"),		            
+		            new URL(officeURL + "URE\\java\\java_uno.jar"),
+		            new URL(officeURL + "URE\\java\\juh.jar")
+            	};
+            }
+            else {
+            	arURL = new URL[] {            
+		            new URL(officeURL + "/program/classes/officebean.jar"),
+		            new URL(officeURL + "/program/classes/ridl.jar"),
+		            new URL(officeURL + "/ure-link/share/java/jurt.jar"),		            
+		            new URL(officeURL + "/ure-link/share/java/unoil.jar"),
+		            new URL(officeURL + "/ure-link/share/java/java_uno.jar"),
+		            new URL(officeURL + "/ure-link/share/java/juh.jar")
+                };
+            }
+            CustomURLClassLoader cl = new CustomURLClassLoader(arURL, InstallationConfigs.getInstance().getClassLoader());
+            File fileProg = new File(s + "/program");
+            cl.addResourcePath(fileProg.toURI().toURL());
+			
+            JLibreOffice jLibreOffice = new JLibreOffice(cl);
+            
+            frame.add(jLibreOffice.getBean().getContainer(), BorderLayout.CENTER);            
+            frame.setVisible(true);
+            
+            jLibreOffice.newWriterDocument();
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -40,50 +75,5 @@ public class JLibreOfficeTest {
 			e.printStackTrace();
 		}
 		
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		
-		
-		
-		
-	}
-	
-	protected static void setEnv(Map<String, String> newenv)
-	{
-	  try
-	    {
-	        Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
-	        Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
-	        theEnvironmentField.setAccessible(true);
-	        Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
-	        env.putAll(newenv);
-	        Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
-	        theCaseInsensitiveEnvironmentField.setAccessible(true);
-	        Map<String, String> cienv = (Map<String, String>)     theCaseInsensitiveEnvironmentField.get(null);
-	        cienv.putAll(newenv);
-	    }
-	    catch (NoSuchFieldException e)
-	    {
-	      try {
-	        Class[] classes = Collections.class.getDeclaredClasses();
-	        Map<String, String> env = System.getenv();
-	        for(Class cl : classes) {
-	            if("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
-	                Field field = cl.getDeclaredField("m");
-	                field.setAccessible(true);
-	                Object obj = field.get(env);
-	                Map<String, String> map = (Map<String, String>) obj;
-	                map.clear();
-	                map.putAll(newenv);
-	            }
-	        }
-	      } catch (Exception e2) {
-	        e2.printStackTrace();
-	      }
-	    } catch (Exception e1) {
-	        e1.printStackTrace();
-	    } 
 	}
 }
