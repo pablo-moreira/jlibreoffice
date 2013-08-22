@@ -11,7 +11,7 @@ public class CustomURLClassLoader extends URLClassLoader {
 
     private ArrayList<URL> resourcePaths;
 
-    public CustomURLClassLoader( URL[] urls, URLClassLoader urlClassLoader) {
+    public CustomURLClassLoader( URL[] urls, ClassLoader urlClassLoader) {
         super( urls , urlClassLoader );
     }
 

@@ -55,11 +55,11 @@ public class JLibreOfficeTest {
 		            new URL(officeURL + "/ure-link/share/java/juh.jar")
                 };
             }
-            CustomURLClassLoader cl = new CustomURLClassLoader(arURL, InstallationConfigs.getInstance().getClassLoader());
-            File fileProg = new File(s + "/program");
-            cl.addResourcePath(fileProg.toURI().toURL());
+            //CustomURLClassLoader cl = new CustomURLClassLoader(arURL, InstallationConfigs.getInstance().getClassLoader());
+            //cl.addResourcePath(new File(unoPath).toURI().toURL());
+            
 			
-            JLibreOffice jLibreOffice = new JLibreOffice(cl);
+            JLibreOffice jLibreOffice = new JLibreOffice(InstallationConfigs.getInstance().getClassLoader());
             
             frame.add(jLibreOffice.getBean().getContainer(), BorderLayout.CENTER);            
             frame.setVisible(true);
