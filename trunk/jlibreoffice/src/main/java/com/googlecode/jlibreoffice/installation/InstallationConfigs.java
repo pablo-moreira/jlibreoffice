@@ -19,8 +19,6 @@ public class InstallationConfigs {
 
 	private CustomURLClassLoader classLoader;
 	private String unoPath;
-
-	private URL[] arURL; 
 	
 	public static InstallationConfigs getInstance() {
 		return instance;
