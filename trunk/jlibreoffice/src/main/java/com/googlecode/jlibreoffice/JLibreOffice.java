@@ -1,21 +1,6 @@
 package com.googlecode.jlibreoffice;
 
 import java.awt.BorderLayout;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-import javax.swing.JFrame;
-
-import com.googlecode.jlibreoffice.installation.InstallationConfigs;
-import com.googlecode.jlibreoffice.util.SystemUtils;
-import com.sun.star.awt.XWindow;
-import com.sun.star.beans.PropertyValue;
-import com.sun.star.frame.XDispatchHelper;
-import com.sun.star.frame.XDispatchProvider;
-import com.sun.star.frame.XFrame;
-import com.sun.star.uno.UnoRuntime;
-import com.sun.star.uno.XComponentContext;
-
 
 public class JLibreOffice {
 
@@ -102,20 +87,18 @@ public class JLibreOffice {
 	public static final String UNO_UNDO =  ".uno:Undo";
 	public static final String UNO_EXPORT_DIRECT_TO_PDF = ".uno:ExportDirectToPDF";
 	
-	private OOoBeanProxy o3Bean;
-	private JFrame frame;
+	private OOoBeanProxy bean; 
 
-	public JLibreOffice(JFrame frame) {
-		this.frame = frame;
-		initialize();
+	public JLibreOffice(ClassLoader classLoader) {
+		initialize(classLoader);
 	}
 
-	public void open(String url) throws Exception	{
+	public void open(String url) throws Exception {
 
 		try {
             //Get the office process to load the URL
-            o3Bean.loadFromURL(url, null);         
-            o3Bean.aquireSystemWindow();
+            bean.loadFromURL(url);         
+            bean.aquireSystemWindow();
 		}
 		catch (Exception e)	{
 			System.err.println("JLibreOffice.open:" + e.getMessage());
@@ -126,102 +109,70 @@ public class JLibreOffice {
 
 	public String exportToPdf() throws Exception {
 		
-		String urlFile = o3Bean.getDocument().getURL();
-		String urlPdf = urlFile + ".pdf";
-
-		PropertyValue[] propertyValue = new PropertyValue[3];
-		propertyValue[0] = new PropertyValue();
-		propertyValue[0].Name = "URL";
-		propertyValue[0].Value = urlPdf;
-		propertyValue[1] = new PropertyValue();
-		propertyValue[1].Name = "FilterName";
-		propertyValue[1].Value = "writer_pdf_Export";
-		propertyValue[2] = new PropertyValue();
-		propertyValue[2].Name = "SelectionOnly";
-		propertyValue[2].Value = false;
-
-		execute(JLibreOffice.UNO_EXPORT_DIRECT_TO_PDF, propertyValue);
-			
-		String path = urlPdf.substring(8, urlPdf.length());
-		
-		try {
-			return URLDecoder.decode(path, "utf-8");
-		} 
-		catch (UnsupportedEncodingException e) {
-			return path;
-		}
+//		String urlFile = o3Bean.getDocument().getURL();
+//		String urlPdf = urlFile + ".pdf";
+//
+//		PropertyValue[] propertyValue = new PropertyValue[3];
+//		propertyValue[0] = new PropertyValue();
+//		propertyValue[0].Name = "URL";
+//		propertyValue[0].Value = urlPdf;
+//		propertyValue[1] = new PropertyValue();
+//		propertyValue[1].Name = "FilterName";
+//		propertyValue[1].Value = "writer_pdf_Export";
+//		propertyValue[2] = new PropertyValue();
+//		propertyValue[2].Name = "SelectionOnly";
+//		propertyValue[2].Value = false;
+//
+//		execute(JLibreOffice.UNO_EXPORT_DIRECT_TO_PDF, propertyValue);
+//			
+//		String path = urlPdf.substring(8, urlPdf.length());
+//		
+//		try {
+//			return URLDecoder.decode(path, "utf-8");
+//		} 
+//		catch (UnsupportedEncodingException e) {
+//			return path;
+//		}
+		return "";
 	}
 	
-	@SuppressWarnings("deprecation")
-	public void execute(String cmd, PropertyValue[] propertyValue) throws Exception {
-		
-		try {
-			XComponentContext xCc = o3Bean.getOOoConnection().getComponentContext();
-			XFrame xFrame = o3Bean.getDocument().getCurrentController().getFrame();
-			Object dispatchHelperObject = xCc.getServiceManager().createInstanceWithContext("com.sun.star.frame.DispatchHelper", xCc);
-			XDispatchHelper xDh = (XDispatchHelper) UnoRuntime.queryInterface(XDispatchHelper.class, dispatchHelperObject);
-			XDispatchProvider xDispatchProvider = (XDispatchProvider) UnoRuntime.queryInterface(XDispatchProvider.class, xFrame);
-			XWindow xWindow = xFrame.getComponentWindow();
-
-			xWindow.setFocus();
-			xDh.executeDispatch(xDispatchProvider, cmd, "", 0, propertyValue);
-		}
-		catch (NoConnectionException e) {
-			throw new Exception(e.getMessage());			
-		}
+	public void execute(String cmd, Object[] propertyValues) throws Exception {
+		bean.execute(cmd, propertyValues);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void closeConnection() {
-		
 		// Verifica se ela foi aberta
-		if (o3Bean != null) {
-			if (o3Bean.isOOoConnected()) {
-				o3Bean.stopOOoConnection();
+		if (bean != null) {
+			if (bean.isOOoConnected()) {
+				bean.stopOOoConnection();
 			}
-			o3Bean.setVisible(false);
+			bean.setVisible(false);
 		}
 	}
 	
-	public OOoBeanProxy getO3Bean() {
-		return o3Bean;
+	public OOoBeanProxy getBean() {
+		return bean;
 	}
-	
-	@SuppressWarnings("deprecation")
-	private void initialize() {
 
-		System.out.println("TESTE - JAVA_UNO : "  + System.getenv("JAVA_UNO"));
+	private void initialize(ClassLoader classLoader) {
 		
 		try {
-			InstallationConfigs.iniciar();
-
 			// !!! Importante - Faz nao aparecer tela de restauracao de arquivos
 			System.setProperty("com.sun.star.officebean.Options", "--norestore");
 			
-			// !!! Importante - Corrige o bug do linux que nao deixa digitar
-			if (SystemUtils.isOsLinux()) {
-				System.out.println("\nSISTEMA OPERACIONAL: \n - Linux");
-				//System.setProperty("sun.awt.xembedserver", "true");
-			}
-			else {
-				System.out.println("\nSistema Operacional: \n - Windows");
-			}         	
+			bean = new OOoBeanProxy(classLoader);
 			
-			o3Bean = new OOoBeanProxy();
-			
-			//o3Bean.setLayout(new BorderLayout());
-			//o3Bean.setMenuBarVisible(false);
-			//o3Bean.setStandardBarVisible(false);
-			//o3Bean.setToolBarVisible(false);
-
-			frame.add(o3Bean, BorderLayout.CENTER);
+			bean.setLayout(new BorderLayout());
+			bean.setMenuBarVisible(false);
+			bean.setStandardBarVisible(false);
+			bean.setToolBarVisible(false);
 		
 			System.out.println("\n------------------------------------------------------");
 			System.out.println(" A conexao com o Open Office foi carregada com sucesso!");
 			System.out.println("------------------------------------------------------");
 		}
 		catch (Exception e) {
-			o3Bean = null;
+			bean = null;
 			System.out.println("\n------------------------------------------------------");
 			System.out.println(" Erro ao iniciar a conexão com o Open Office !");
 			System.out.println("  - " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
@@ -230,9 +181,8 @@ public class JLibreOffice {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean isConnected() {
-		if (o3Bean != null && o3Bean.isOOoConnected()) {
+		if (bean != null && bean.isOOoConnected()) {
 			return true;
 		}
 		else {
@@ -242,15 +192,15 @@ public class JLibreOffice {
 	
 	public boolean isEditingDocument() {		
 		try {
-			return o3Bean.getDocument() != null;
+			return bean.getDocument() != null;
 		} 
-		catch (NoConnectionException e) {
+		catch (Exception e) {
 			return false;
 		}
 	}
 	
 	public boolean isInitialized() {
-		return o3Bean != null;
+		return bean != null;
 	}
 	
 	public void newWriterDocument() throws Exception {
