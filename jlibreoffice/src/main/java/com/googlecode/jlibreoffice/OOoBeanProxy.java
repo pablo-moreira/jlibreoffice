@@ -190,14 +190,17 @@ public class OOoBeanProxy {
 			Object sm = invoke(xCc, "getServiceManager");
 			Object dispatchHelperObject = sm.getClass().getMethod("createInstanceWithContext", String.class, componentContextClass).invoke(sm, "com.sun.star.frame.DispatchHelper", xCc);
 					
-			Method urQueryInterfaceMethod = unoRuntimeClass.getMethod("queryInterface", Class.class, Object.class);
-			
-			Object xDh = urQueryInterfaceMethod.invoke(null, dispatchHelperClass, dispatchHelperObject);
+			Object xDh = unoRuntimeClass.getMethod("queryInterface", Class.class, Object.class).invoke(null, dispatchHelperClass, dispatchHelperObject);
 			Object xDispatchProvider = unoRuntimeClass.getMethod("queryInterface", Class.class, Object.class).invoke(null, dispatchProviderClass, xFrame);
 			Object xWindow = invoke(xFrame, "getComponentWindow");
 
 			invoke(xWindow, "setFocus");
-			invoke(xDh, "executeDispatch", xDispatchProvider, cmd, "", 0, propertyValues);
+			
+			Object arProp = Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1);
+
+			Method excuteDispatchMethod = xDh.getClass().getMethod("executeDispatch", dispatchProviderClass, String.class, String.class, Integer.class, arProp.getClass());
+				
+			excuteDispatchMethod.invoke(xDh, xDispatchProvider, cmd, "", 0, propertyValues);
 		}
 		catch (Exception e) {
 			throw new Exception(e.getMessage());			
