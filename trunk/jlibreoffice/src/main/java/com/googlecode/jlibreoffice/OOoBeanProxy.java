@@ -180,17 +180,20 @@ public class OOoBeanProxy {
 			xDh.executeDispatch(xDispatchProvider, cmd, "", 0, propertyValue);
 			*/
 			
+			Class<?> componentContextClass = classLoader.loadClass("com.sun.star.uno.XComponentContext");
+			Class<?> dispatchHelperClass = classLoader.loadClass("com.sun.star.frame.XDispatchHelper");
+			Class<?> dispatchProviderClass = classLoader.loadClass("com.sun.star.frame.XDispatchProvider");
+			Class<?> unoRuntimeClass = classLoader.loadClass("com.sun.star.uno.UnoRuntime");
+			
 			Object xCc = invoke(invoke(bean, "getOOoConnection"), "getComponentContext");					
 			Object xFrame = invoke(invoke(getDocument(),"getCurrentController"),"getFrame");
-			Object dispatchHelperObject = invoke(invoke(xCc, "getServiceManager"), "createInstanceWithContext", "com.sun.star.frame.DispatchHelper", xCc);
-
-			Class<?> dispatchHelperClass = getClass().getClassLoader().loadClass("com.sun.star.frame.XDispatchHelper");
-			Class<?> dispatchProviderClass = getClass().getClassLoader().loadClass("com.sun.star.frame.XDispatchProvider");
-
-			Class<?> unoRuntimeClass = getClass().getClassLoader().loadClass("com.sun.star.uno.UnoRuntime");
+			Object sm = invoke(xCc, "getServiceManager");
+			Object dispatchHelperObject = sm.getClass().getMethod("createInstanceWithContext", String.class, componentContextClass).invoke(sm, "com.sun.star.frame.DispatchHelper", xCc);
+					
+			Method urQueryInterfaceMethod = unoRuntimeClass.getMethod("queryInterface", Class.class, Object.class);
 			
-			Object xDh = unoRuntimeClass.getMethod("queryInterface", Type.class, Object.class).invoke(dispatchHelperClass, dispatchHelperObject);
-			Object xDispatchProvider = unoRuntimeClass.getMethod("queryInterface", Type.class, Object.class).invoke(dispatchProviderClass, xFrame);
+			Object xDh = urQueryInterfaceMethod.invoke(null, dispatchHelperClass, dispatchHelperObject);
+			Object xDispatchProvider = unoRuntimeClass.getMethod("queryInterface", Class.class, Object.class).invoke(null, dispatchProviderClass, xFrame);
 			Object xWindow = invoke(xFrame, "getComponentWindow");
 
 			invoke(xWindow, "setFocus");
