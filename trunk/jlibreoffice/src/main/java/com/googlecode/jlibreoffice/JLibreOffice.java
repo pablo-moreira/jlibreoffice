@@ -1,6 +1,7 @@
 package com.googlecode.jlibreoffice;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 
 public class JLibreOffice {
 
@@ -133,13 +134,14 @@ public class JLibreOffice {
 //		catch (UnsupportedEncodingException e) {
 //			return path;
 //		}
+		
 		return "";
 	}
 	
 	public void execute(String cmd, Object[] propertyValues) throws Exception {
 		bean.execute(cmd, propertyValues);
 	}
-	
+
 	public void closeConnection() {
 		// Verifica se ela foi aberta
 		if (bean != null) {
@@ -169,14 +171,14 @@ public class JLibreOffice {
 		
 			System.out.println("\n------------------------------------------------------");
 			System.out.println(" A conexao com o Open Office foi carregada com sucesso!");
-			System.out.println("------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
 		}
 		catch (Exception e) {
 			bean = null;
 			System.out.println("\n------------------------------------------------------");
 			System.out.println(" Erro ao iniciar a conexão com o Open Office !");
 			System.out.println("  - " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
-			System.out.println("------------------------------------------------------");
+			System.out.println("--------------------------------------------------------");
 			e.printStackTrace();
 		}
 	}
@@ -209,7 +211,6 @@ public class JLibreOffice {
 
 	public void save() throws Exception {
 		
-		// Verifica se tem alguma conexao
 		if (!isConnected()) {
 			return;
 		}
@@ -218,10 +219,21 @@ public class JLibreOffice {
 
 	public void saveAs() throws Exception {
 		
-		// Verifica se tem alguma conexao
 		if (!isConnected()) {
 			return;
 		}
 		execute(JLibreOffice.UNO_SAVE_AS, null);		
+	}
+	
+	public Container getContainer() {
+		return bean.getContainer();
+	}
+
+	public void stopOOoConnection() {
+		
+		if (!isConnected()) {
+			return;
+		}
+		bean.stopOOoConnection();
 	}
 }

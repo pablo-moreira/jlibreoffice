@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.googlecode.jlibreoffice.util.CustomURLClassLoader;
 import com.googlecode.jlibreoffice.util.SystemUtils;
 import com.sun.star.lib.loader.InstallationFinder;
 
@@ -16,8 +17,10 @@ public class InstallationConfigs {
 
 	private static InstallationConfigs instance;
 
-	private URLClassLoader classLoader;
-	private String unoPath; 
+	private CustomURLClassLoader classLoader;
+	private String unoPath;
+
+	private URL[] arURL; 
 	
 	public static InstallationConfigs getInstance() {
 		return instance;
@@ -49,18 +52,25 @@ public class InstallationConfigs {
 		
 		String unoPathRoot = new File(unoPath).getParent();
 		
+		List<DependencyPath> libs = new ArrayList<DependencyPath>();
+		
+		libs.add(new DependencyPath("officebean.jar", true));
+		libs.add(new DependencyPath("unoil.jar", true));
+		libs.add(new DependencyPath("jurt.jar", true));
+		libs.add(new DependencyPath("ridl.jar", true));
+		libs.add(new DependencyPath("java_uno.jar", true));
+		libs.add(new DependencyPath("juh.jar", true));
+		
 		// Verifica qual e o SO
 		if (SystemUtils.isOsWindows()) {
-
-			List<LibraryPath> libs = new ArrayList<LibraryPath>(); 
 			
-			libs.add(new LibraryPath("msvcr70.dll", false));
-			libs.add(new LibraryPath("msvcr71.dll", false));
-			libs.add(new LibraryPath("uwinapi.dll", false));
-			libs.add(new LibraryPath("jawt.dll", false));
-			libs.add(new LibraryPath("officebean.dll", true));
-			libs.add(new LibraryPath("sal3.dll", true));
-			libs.add(new LibraryPath("jpipe.dll", true));
+			libs.add(new DependencyPath("msvcr70.dll", false));
+			libs.add(new DependencyPath("msvcr71.dll", false));
+			libs.add(new DependencyPath("uwinapi.dll", false));
+			libs.add(new DependencyPath("jawt.dll", false));
+			libs.add(new DependencyPath("officebean.dll", true));
+			libs.add(new DependencyPath("sal3.dll", true));
+			libs.add(new DependencyPath("jpipe.dll", true));
 			
 			List<File> dirs = new ArrayList<File>();
 			
@@ -69,22 +79,23 @@ public class InstallationConfigs {
 			dirs.add(new File(unoPathRoot + "\\URE\\bin"));
 			dirs.add(new File(unoPathRoot + "\\Basis\\program"));			
 			dirs.add(new File(unoPathRoot + "\\URE\\bin"));
+			dirs.add(new File(unoPathRoot + "\\URE\\java\\"));
 			dirs.add(new File(unoPathRoot + "\\Basis\\program"));
 			
 			initializeClassloader(libs, dirs);
 		}
 		else if (SystemUtils.isOsLinux()) {
-						
-			List<LibraryPath> libs = new ArrayList<LibraryPath>(); 
-			
-			libs.add(new LibraryPath("libofficebean.so", true));
-			libs.add(new LibraryPath("libjpipe.so", true));
-			libs.add(new LibraryPath("libjuh.so", true));
+
+			libs.add(new DependencyPath("libofficebean.so", true));
+			libs.add(new DependencyPath("libjpipe.so", true));
+			libs.add(new DependencyPath("libjuh.so", true));
 
 			List<File> dirs = new ArrayList<File>();
 
 			dirs.add(new File(unoPathRoot + "/basis-link/program/"));
 			dirs.add(new File(unoPathRoot + "/program/"));
+			dirs.add(new File(unoPathRoot + "/program/classes/"));
+			dirs.add(new File(unoPathRoot + "/ure-link/share/java/"));
 			dirs.add(new File("/usr/lib/ure/lib/"));
 			
 			initializeClassloader(libs, dirs);
@@ -94,17 +105,18 @@ public class InstallationConfigs {
 		}
 	}
 	
-	private void initializeClassloader(List<LibraryPath> libs, List<File> dirs) throws Exception {
+	private void initializeClassloader(List<DependencyPath> libs, List<File> dirs) throws Exception {
 
 		Set<URL> urls = new HashSet<URL>();
 		
-		for (LibraryPath lib : libs) {
+		for (DependencyPath lib : libs) {
 
 			URL found = null;
 			
 			for (File dir : dirs) {
-				if (new File(dir, lib.getLibraryName()).exists()) {
-					found = dir.toURI().toURL();
+				File file = new File(dir, lib.getDependencyName());
+				if (file.exists()) {
+					found = file.toURI().toURL();
 					break;
 				}
 			}
@@ -113,11 +125,14 @@ public class InstallationConfigs {
 				urls.add(found);
 			}
 			else if (lib.isRequired()) { 
-				throw new Exception(MessageFormat.format("A biblioteca {0} não foi encontrada!", lib.getLibraryName()));
+				throw new Exception(MessageFormat.format("A biblioteca {0} não foi encontrada!", lib.getDependencyName()));
 			}
 		}
 
-		this.classLoader = new URLClassLoader(urls.toArray(new URL[]{}), InstallationConfigs.class.getClassLoader());		
+		this.classLoader = new CustomURLClassLoader(urls.toArray(new URL[]{}), InstallationConfigs.class.getClassLoader());
+		this.classLoader.addResourcePath(new File(getUnoPath()).toURI().toURL());
+		
+		//this.classLoader = new URLClassLoader(urls.toArray(new URL[]{}), InstallationConfigs.class.getClassLoader());		
 	}
 
 	public URLClassLoader getClassLoader() {
