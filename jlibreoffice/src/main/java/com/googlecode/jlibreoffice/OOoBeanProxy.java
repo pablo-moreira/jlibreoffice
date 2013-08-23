@@ -2,8 +2,10 @@ package com.googlecode.jlibreoffice;
 
 import java.awt.Container;
 import java.awt.LayoutManager;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 
 public class OOoBeanProxy {
 
@@ -86,6 +88,15 @@ public class OOoBeanProxy {
 			throw new RuntimeException("Erro ao executar OOoBean.getDocument(), mensagem interna: " + e.getMessage());
 		}
 	}
+
+	public String getDocumentURL() {
+		try {
+			return (String) invoke(getDocument(), "getURL");
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.getDocumentURL(), mensagem interna: " + e.getMessage());
+		}
+	}
 	
 	public void loadFromURL(String url) {
 		try {
@@ -109,6 +120,16 @@ public class OOoBeanProxy {
 	
 	public Container getContainer() {
 		return (Container) bean;
+	}
+	
+	public void clear() {
+		try {
+			invoke(bean, "clear");
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.aquireSystemWindow(), mensagem interna: " + e.getMessage());
+		}
+		
 	}
 	
 	private Object invoke(Object object, String method, boolean value) throws Exception {
@@ -156,6 +177,20 @@ public class OOoBeanProxy {
 		}
 	}
 	
+	private void set(Object object, String fieldName, Object value) throws Exception {		
+		try {
+			object.getClass().getField(fieldName).set(fieldName, value);		
+		}
+		catch (Exception e) {}
+		
+		try {
+			object.getClass().getDeclaredField(fieldName).set(object, value);
+		}
+		catch (Exception e) {
+			throw e;
+		}		
+	}
+	
 	private Class<?> getPropertyValueArrayClass() throws Exception {
 		return Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1).getClass();
 	}
@@ -194,5 +229,57 @@ public class OOoBeanProxy {
 
 	public void setVisible(boolean value) {
 		getContainer().setVisible(value);
+	}
+
+
+	public String exportToPdf() throws Exception {
+
+		/*
+		String urlFile = o3Bean.getDocument().getURL();
+		String urlPdf = urlFile + ".pdf";
+
+		PropertyValue[] propertyValue = new PropertyValue[3];
+		propertyValue[0] = new PropertyValue();
+		propertyValue[0].Name = "URL";
+		propertyValue[0].Value = urlPdf;
+		propertyValue[1] = new PropertyValue();
+		propertyValue[1].Name = "FilterName";
+		propertyValue[1].Value = "writer_pdf_Export";
+		propertyValue[2] = new PropertyValue();
+		propertyValue[2].Name = "SelectionOnly";
+		propertyValue[2].Value = false;
+
+		execute(JLibreOffice.UNO_EXPORT_DIRECT_TO_PDF, propertyValue);
+		 */
+		
+		String urlFile = getDocumentURL();		
+		String urlPdf = urlFile + ".pdf";
+
+		Class<?> propertyValueClass = classLoader.loadClass("com.sun.star.beans.PropertyValue");
+		
+		Object[] propertyValues = (Object[]) Array.newInstance(propertyValueClass, 3);
+
+		propertyValues[0] = propertyValueClass.newInstance();
+		set(propertyValues[0], "Name", "URL");
+		set(propertyValues[0], "Value", urlPdf);
+
+		propertyValues[1] = propertyValueClass.newInstance();
+		set(propertyValues[1], "Name", "FilterName");
+		set(propertyValues[1], "Value", "writer_pdf_Export");
+
+		propertyValues[2] = propertyValueClass.newInstance();
+		set(propertyValues[2], "Name", "SelectionOnly");
+		set(propertyValues[2], "Value", false);
+		
+		execute(JLibreOffice.UNO_EXPORT_DIRECT_TO_PDF, propertyValues);
+			
+		String path = urlPdf.substring(8, urlPdf.length());
+		
+		try {
+			return URLDecoder.decode(path, "utf-8");
+		} 
+		catch (UnsupportedEncodingException e) {
+			return path;
+		}
 	}
 }

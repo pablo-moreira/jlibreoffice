@@ -93,7 +93,7 @@ public class JLibreOfficeTest {
 		btnPdf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					jLibreOffice.open("file:/home/pablo-moreira/Desktop/teste.odt");
+					jLibreOffice.exportToPdf();
 				} 
 				catch (Exception e) {
 					e.printStackTrace();
@@ -104,6 +104,7 @@ public class JLibreOfficeTest {
 		pnButtons.add(btnOpen);
 		pnButtons.add(btnSalvar);
 		pnButtons.add(btnSalvarAs);
+		pnButtons.add(btnPdf);
 		frame.add(pnButtons, BorderLayout.NORTH);	
 	}
 }
