@@ -109,33 +109,7 @@ public class JLibreOffice {
 	}
 
 	public String exportToPdf() throws Exception {
-		
-//		String urlFile = o3Bean.getDocument().getURL();
-//		String urlPdf = urlFile + ".pdf";
-//
-//		PropertyValue[] propertyValue = new PropertyValue[3];
-//		propertyValue[0] = new PropertyValue();
-//		propertyValue[0].Name = "URL";
-//		propertyValue[0].Value = urlPdf;
-//		propertyValue[1] = new PropertyValue();
-//		propertyValue[1].Name = "FilterName";
-//		propertyValue[1].Value = "writer_pdf_Export";
-//		propertyValue[2] = new PropertyValue();
-//		propertyValue[2].Name = "SelectionOnly";
-//		propertyValue[2].Value = false;
-//
-//		execute(JLibreOffice.UNO_EXPORT_DIRECT_TO_PDF, propertyValue);
-//			
-//		String path = urlPdf.substring(8, urlPdf.length());
-//		
-//		try {
-//			return URLDecoder.decode(path, "utf-8");
-//		} 
-//		catch (UnsupportedEncodingException e) {
-//			return path;
-//		}
-		
-		return "";
+		return bean.exportToPdf();
 	}
 	
 	public void execute(String cmd, Object[] propertyValues) throws Exception {
