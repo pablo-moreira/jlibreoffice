@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.LayoutManager;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 
 public class OOoBeanProxy {
 
@@ -92,9 +91,9 @@ public class OOoBeanProxy {
 		try {
 			Object arProp = Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1);
 
-            Method methLoad = beanClass.getMethod("loadFromURL", new Class[] { String.class, arProp.getClass() });
+            Method methLoad = beanClass.getMethod("loadFromURL", String.class, arProp.getClass());
 
-            methLoad.invoke(bean, new Object[] { url, null });
+            methLoad.invoke(bean, url, null);
 		}
 		catch (Exception e) {
 			throw new RuntimeException("Erro ao executar OOoBean.loadFromURL(), mensagem interna: " + e.getMessage());
@@ -161,25 +160,7 @@ public class OOoBeanProxy {
 		
 	public void execute(String cmd, Object[] propertyValues) throws Exception {
 		
-		try {
-			/*
-			com.sun.star.frame.XDispatchHelper
-			com.sun.star.frame.XDispatchProvider
-			com.sun.star.frame.XFrame
-			com.sun.star.uno.UnoRuntime
-			com.sun.star.uno.XComponentContext
-			
-			XComponentContext xCc = o3Bean.getOOoConnection().getComponentContext();
-			XFrame xFrame = o3Bean.getDocument().getCurrentController().getFrame();
-			Object dispatchHelperObject = xCc.getServiceManager().createInstanceWithContext("com.sun.star.frame.DispatchHelper", xCc);
-			XDispatchHelper xDh = (XDispatchHelper) UnoRuntime.queryInterface(XDispatchHelper.class, dispatchHelperObject);
-			XDispatchProvider xDispatchProvider = (XDispatchProvider) UnoRuntime.queryInterface(XDispatchProvider.class, xFrame);
-			XWindow xWindow = xFrame.getComponentWindow();
-
-			xWindow.setFocus();
-			xDh.executeDispatch(xDispatchProvider, cmd, "", 0, propertyValue);
-			*/
-			
+		try {			
 			Class<?> componentContextClass = classLoader.loadClass("com.sun.star.uno.XComponentContext");
 			Class<?> dispatchHelperClass = classLoader.loadClass("com.sun.star.frame.XDispatchHelper");
 			Class<?> dispatchProviderClass = classLoader.loadClass("com.sun.star.frame.XDispatchProvider");
@@ -198,7 +179,7 @@ public class OOoBeanProxy {
 			
 			Object arProp = Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1);
 
-			Method excuteDispatchMethod = xDh.getClass().getMethod("executeDispatch", dispatchProviderClass, String.class, String.class, Integer.class, arProp.getClass());
+			Method excuteDispatchMethod = xDh.getClass().getMethod("executeDispatch", dispatchProviderClass, String.class, String.class, int.class, arProp.getClass());
 				
 			excuteDispatchMethod.invoke(xDh, xDispatchProvider, cmd, "", 0, propertyValues);
 		}

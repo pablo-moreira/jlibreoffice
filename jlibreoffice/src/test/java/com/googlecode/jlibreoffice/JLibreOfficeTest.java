@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,9 +34,6 @@ public class JLibreOfficeTest {
 			frame.setVisible(true);
             
             jLibreOffice.newWriterDocument();
-            
-            jLibreOffice.save();
-            
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -80,7 +78,8 @@ public class JLibreOfficeTest {
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					jLibreOffice.open("file:/home/pablo-moreira/Desktop/teste.odt");
+					File f = new File("c:/teste.odt");					
+					jLibreOffice.open(f.toURL().toString());
 				} 
 				catch (Exception e) {
 					e.printStackTrace();
