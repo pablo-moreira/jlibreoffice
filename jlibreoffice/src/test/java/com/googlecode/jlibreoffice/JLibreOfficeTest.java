@@ -78,8 +78,9 @@ public class JLibreOfficeTest {
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					File f = new File("c:/teste.odt");					
-					jLibreOffice.open(f.toURL().toString());
+					File f = new File("C:/Users/205327/Desktop/teste.odt");
+					String t = "file:///" + f.getAbsolutePath().replace('\\', '/'); 				
+					jLibreOffice.open(t);
 				} 
 				catch (Exception e) {
 					e.printStackTrace();

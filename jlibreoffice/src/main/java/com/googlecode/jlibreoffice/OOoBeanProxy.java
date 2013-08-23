@@ -89,9 +89,7 @@ public class OOoBeanProxy {
 	
 	public void loadFromURL(String url) {
 		try {
-			Object arProp = Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1);
-
-            Method methLoad = beanClass.getMethod("loadFromURL", String.class, arProp.getClass());
+            Method methLoad = beanClass.getMethod("loadFromURL", String.class, getPropertyValueArrayClass());
 
             methLoad.invoke(bean, url, null);
 		}
@@ -157,6 +155,10 @@ public class OOoBeanProxy {
 			throw e;
 		}
 	}
+	
+	private Class<?> getPropertyValueArrayClass() throws Exception {
+		return Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1).getClass();
+	}
 		
 	public void execute(String cmd, Object[] propertyValues) throws Exception {
 		
@@ -166,7 +168,7 @@ public class OOoBeanProxy {
 			Class<?> dispatchProviderClass = classLoader.loadClass("com.sun.star.frame.XDispatchProvider");
 			Class<?> unoRuntimeClass = classLoader.loadClass("com.sun.star.uno.UnoRuntime");
 			
-			Object xCc = invoke(invoke(bean, "getOOoConnection"), "getComponentContext");					
+			Object xCc = invoke(invoke(bean, "getOOoConnection"), "getComponentContext");
 			Object xFrame = invoke(invoke(getDocument(),"getCurrentController"),"getFrame");
 			Object sm = invoke(xCc, "getServiceManager");
 			Object dispatchHelperObject = sm.getClass().getMethod("createInstanceWithContext", String.class, componentContextClass).invoke(sm, "com.sun.star.frame.DispatchHelper", xCc);
@@ -176,10 +178,8 @@ public class OOoBeanProxy {
 			Object xWindow = invoke(xFrame, "getComponentWindow");
 
 			invoke(xWindow, "setFocus");
-			
-			Object arProp = Array.newInstance(classLoader.loadClass("com.sun.star.beans.PropertyValue"), 1);
 
-			Method excuteDispatchMethod = xDh.getClass().getMethod("executeDispatch", dispatchProviderClass, String.class, String.class, int.class, arProp.getClass());
+			Method excuteDispatchMethod = xDh.getClass().getMethod("executeDispatch", dispatchProviderClass, String.class, String.class, int.class, getPropertyValueArrayClass());
 				
 			excuteDispatchMethod.invoke(xDh, xDispatchProvider, cmd, "", 0, propertyValues);
 		}
