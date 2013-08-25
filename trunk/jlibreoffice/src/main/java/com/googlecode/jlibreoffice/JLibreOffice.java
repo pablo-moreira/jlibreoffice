@@ -89,7 +89,7 @@ public class JLibreOffice {
 	public static final String UNO_TWAIN_TRANSFER =  ".uno:TwainTransfer";
 	public static final String UNO_UNDO =  ".uno:Undo";
 	public static final String UNO_EXPORT_DIRECT_TO_PDF = ".uno:ExportDirectToPDF";
-		
+
 	private OOoBeanProxy bean;
 	private ResourceBundle messageBundle;
 
@@ -122,7 +122,6 @@ public class JLibreOffice {
 			e.printStackTrace();
 		}
 	}
-
 
 	public void open(String url) throws Exception {
 

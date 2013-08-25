@@ -5,8 +5,10 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ResourceBundle;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.googlecode.jlibreoffice.JLibreOffice;
@@ -60,6 +62,30 @@ public class MenuBuilder {
 		menuBar.add(buildTableMenu());
 	}
 	
+	public MenuBar buildCompleteMenuBar() {
+		
+		MenuBar menuBar = new MenuBar();
+		
+		menuBar.add(buildFileMenu());
+		menuBar.add(buildInsertMenu());
+		menuBar.add(buildFormatMenu());
+		menuBar.add(buildTableMenu());
+		
+		return menuBar;
+	}
+	
+	public Menu buildFileMenu() {
+		
+		Menu menu = buildMenu("file");
+		
+		menu.add(buildNewWriterMenuItem());
+		menu.add(buildOpenMenuItem());
+		menu.add(buildSaveMenuItem());
+		menu.add(buildSaveAsMenuItem());
+		
+		return menu;
+	}
+
 	public Menu buildEditMenu() {
 		
     	Menu menu = buildMenu("edit");
@@ -200,6 +226,83 @@ public class MenuBuilder {
     	
     	return menu;
     }
+       
+    public MenuItem buildMenuItem(String name, ActionListener actionListener) {
+    
+    	MenuItem menuItem = new MenuItem(getMessageBundleLabel(name));
+    	menuItem.addActionListener(actionListener);
+		
+		return menuItem;
+    }
+    	
+	public MenuItem buildNewWriterMenuItem() {
+		return buildMenuItem("file.new.writer", new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					getJLibreOffice().newWriterDocument();
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(),"jLibreOffice - Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+	}
+    
+    public MenuItem buildSaveAsMenuItem() {
+    	return buildMenuItem("file.saveAs", new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					getJLibreOffice().saveAs();
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(),"jLibreOffice - Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+    }
+    
+    public MenuItem buildSaveMenuItem() {
+    	return buildMenuItem("file.save", new ActionListener(){	
+			public void actionPerformed(ActionEvent evt) {
+				try {
+					getJLibreOffice().save();
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(),"jLibreOffice - Erro", JOptionPane.ERROR_MESSAGE);
+				}			
+			}
+		});		
+    }
+    
+    public MenuItem buildOpenMenuItem() {
+    	return buildMenuItem("file.open", new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try { 				
+					JFileChooser fc = new JFileChooser();
+					
+					fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					
+					int retorno = fc.showOpenDialog(null);				
+					
+					if(retorno == JFileChooser.APPROVE_OPTION) {
+					
+						File file = fc.getSelectedFile();
+								
+						String url = "file:///" + file.getAbsolutePath().replace('\\', '/');
+						
+						getJLibreOffice().open(url);
+					}
+				} 
+				catch (Exception e) {					
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage(),"jLibreOffice - Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+    }    
     
     public Menu buildFormatMenu() {
     	
