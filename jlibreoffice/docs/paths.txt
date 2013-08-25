@@ -76,11 +76,14 @@
 
 
 
-// Windows Libs
-msvcr70.dll		
-msvcr71.dll		
-uwinapi.dll 	
-jawt.dll		
-officebean.dll	
-sal3.dll
-jpipe.dll
+
+------------------
+-- Windows Libs --
+------------------
+ - msvcr70.dll		
+ - msvcr71.dll		
+ - uwinapi.dll 	
+ - jawt.dll		
+ - officebean.dll	
+ - sal3.dll
+ - jpipe.dll
