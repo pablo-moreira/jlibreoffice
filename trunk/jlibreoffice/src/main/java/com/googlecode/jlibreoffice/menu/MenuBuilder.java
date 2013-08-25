@@ -1,6 +1,7 @@
 package com.googlecode.jlibreoffice.menu;
 
 import java.awt.Menu;
+import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,7 +52,14 @@ public class MenuBuilder {
 		
 		return menuItem;
 	}
-		
+	
+	public void buildMenuBar(MenuBar menuBar) {
+		menuBar.add(buildEditMenu());
+		menuBar.add(buildInsertMenu());
+		menuBar.add(buildFormatMenu());
+		menuBar.add(buildTableMenu());
+	}
+	
 	public Menu buildEditMenu() {
 		
     	Menu menu = buildMenu("edit");
