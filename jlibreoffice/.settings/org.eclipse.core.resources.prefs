@@ -1,5 +1,5 @@
+#Sat Aug 24 19:55:21 AMT 2013
 eclipse.preferences.version=1
-encoding//src/main/src/EditorTjro.properties=UTF-8
-encoding//src/main/src/src/EditorTjro.properties=UTF-8
-encoding//src/main/src/src/br/jus/tjro/editor/EditorTjroMenuBar.java=UTF-8
+encoding//src/main/java/com/googlecode/jlibreoffice/resources/MessageBundle.properties=UTF-8
+encoding//src/main/java/com/googlecode/jlibreoffice/resources/MessageBundle_pt.properties=UTF-8
 encoding/<project>=UTF-8
