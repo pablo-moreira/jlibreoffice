@@ -2,6 +2,7 @@ package com.googlecode.jlibreoffice;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.util.ResourceBundle;
 
 public class JLibreOffice {
 
@@ -61,7 +62,7 @@ public class JLibreOffice {
 	public static final String UNO_INSERT_SOUND =  ".uno:InsertSound";
 	public static final String UNO_INSERT_SYMBOL =  ".uno:InsertSymbol";
 	public static final String UNO_INSERT_TABLE = ".uno:InsertTable";
-	public static final String UNO_INSERT_TIPO_FIELD =  ".uno:InsertTimeField";
+	public static final String UNO_INSERT_TIME_FIELD = ".uno:InsertTimeField";
 	public static final String UNO_INSERT_TITLE_FIELD =  ".uno:InsertTitleField";
 	public static final String UNO_INSERT_TOPIC_FIELD =  ".uno:InsertTopicField";
 	public static final String UNO_INSERT_VACTIONEO =  ".uno:InsertVactioneo";
@@ -83,16 +84,45 @@ public class JLibreOffice {
 	public static final String UNO_SELECT_TEXT_MODE =  ".uno:SelectTextMode";
 	public static final String UNO_SPLIT_CELL = ".uno:SplitCell";
 	public static final String UNO_SPLIT_TABLE = ".uno:SplitTable";
+	public static final String UNO_TABLE_DIALOG =  ".uno:TableDialog";
 	public static final String UNO_TWAIN_SELECT =  ".uno:TwainSelect";
 	public static final String UNO_TWAIN_TRANSFER =  ".uno:TwainTransfer";
 	public static final String UNO_UNDO =  ".uno:Undo";
 	public static final String UNO_EXPORT_DIRECT_TO_PDF = ".uno:ExportDirectToPDF";
-	
-	private OOoBeanProxy bean; 
+		
+	private OOoBeanProxy bean;
+	private ResourceBundle messageBundle;
 
-	public JLibreOffice(ClassLoader classLoader) {
+	public JLibreOffice(ClassLoader classLoader) {		
 		initialize(classLoader);
 	}
+		
+	private void initialize(ClassLoader classLoader) {
+		
+		try {
+			// !!! Importante - Faz nao aparecer tela de restauracao de arquivos
+			System.setProperty("com.sun.star.officebean.Options", "--norestore");
+					
+			messageBundle = ResourceBundle.getBundle(JLibreOfficeConstants.DEFAULT_MESSAGE_BUNDLE);
+			
+			bean = new OOoBeanProxy(classLoader);
+			
+			bean.setLayout(new BorderLayout());
+		
+			System.out.println("\n------------------------------------------------------");
+			System.out.println(" A conexao com o LibreOffice foi carregada com sucesso!");
+			System.out.println("-------------------------------------------------------");
+		}
+		catch (Exception e) {
+			bean = null;
+			System.out.println("\n------------------------------------------------------");
+			System.out.println(" Erro ao iniciar a conexao com o LibreOffice!");
+			System.out.println("  - " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
+			System.out.println("--------------------------------------------------------");
+			e.printStackTrace();
+		}
+	}
+
 
 	public void open(String url) throws Exception {
 
@@ -118,33 +148,6 @@ public class JLibreOffice {
 	
 	public OOoBeanProxy getBean() {
 		return bean;
-	}
-
-	private void initialize(ClassLoader classLoader) {
-		
-		try {
-			// !!! Importante - Faz nao aparecer tela de restauracao de arquivos
-			System.setProperty("com.sun.star.officebean.Options", "--norestore");
-			
-			bean = new OOoBeanProxy(classLoader);
-			
-			bean.setLayout(new BorderLayout());
-			bean.setMenuBarVisible(false);
-			bean.setStandardBarVisible(false);
-			bean.setToolBarVisible(false);
-		
-			System.out.println("\n------------------------------------------------------");
-			System.out.println(" A conexao com o LibreOffice foi carregada com sucesso!");
-			System.out.println("-------------------------------------------------------");
-		}
-		catch (Exception e) {
-			bean = null;
-			System.out.println("\n------------------------------------------------------");
-			System.out.println(" Erro ao iniciar a conexao com o LibreOffice!");
-			System.out.println("  - " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
-			System.out.println("--------------------------------------------------------");
-			e.printStackTrace();
-		}
 	}
 	
 	public void closeConnection() {
@@ -212,4 +215,22 @@ public class JLibreOffice {
 		}
 		bean.stopOOoConnection();
 	}
+	
+	
+
+	public void setMenuBarVisible(boolean value) {
+		bean.setMenuBarVisible(value);
+	}
+
+	public void setStandardBarVisible(boolean value) {
+		bean.setStandardBarVisible(value);
+	}
+
+	public void setToolBarVisible(boolean value) {
+		bean.setToolBarVisible(value);
+	}
+
+	public ResourceBundle getMessageBundle() {
+		return messageBundle;
+	}	
 }
