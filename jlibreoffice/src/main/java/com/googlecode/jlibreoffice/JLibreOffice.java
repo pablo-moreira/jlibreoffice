@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.util.ResourceBundle;
 
-public class JLibreOffice {
+import org.apache.log4j.Logger;
 
+public class JLibreOffice {
+	
+	private static final Logger log = Logger.getLogger(JLibreOffice.class);
+	
 	public static final String NEW_WRITER = "private:factory/swriter";
 	public static final String UNO_AUTO_FORMAT_APPLY = ".uno:AutoFormatApply";
 	public static final String UNO_AUTO_FORMAT_REDLINE_APPLY = ".uno:AutoFormatRedlineApply";
@@ -109,17 +113,11 @@ public class JLibreOffice {
 			
 			bean.setLayout(new BorderLayout());
 		
-			System.out.println("\n------------------------------------------------------");
-			System.out.println(" A conexao com o LibreOffice foi carregada com sucesso!");
-			System.out.println("-------------------------------------------------------");
+			log.info("A conexao com o LibreOffice foi carregada com sucesso!");
 		}
 		catch (Exception e) {
 			bean = null;
-			System.out.println("\n------------------------------------------------------");
-			System.out.println(" Erro ao iniciar a conexao com o LibreOffice!");
-			System.out.println("  - " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
-			System.out.println("--------------------------------------------------------");
-			e.printStackTrace();
+			log.error("Erro ao iniciar a conexao com o LibreOffice, mensagem interna: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
 		}
 	}
 
@@ -131,7 +129,7 @@ public class JLibreOffice {
             bean.aquireSystemWindow();
 		}
 		catch (Exception e)	{
-			System.err.println("JLibreOffice.open:" + e.getMessage());
+			log.error("JLibreOffice.open: " + e.getMessage());
 			e.printStackTrace();			
 			throw new Exception(e.getMessage());
 		}
@@ -153,9 +151,7 @@ public class JLibreOffice {
 		if (bean != null) {
 			if (bean.isOOoConnected()) {
 				bean.stopOOoConnection();
-				System.out.println("\n------------------------------------------------------");
-				System.out.println(" A conexao com o LibreOffice foi fechada com sucesso!");
-				System.out.println("-------------------------------------------------------");
+				log.info("A conexao com o LibreOffice foi fechada com sucesso!");
 			}
 			bean.setVisible(false);
 		}

@@ -7,8 +7,12 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 
+import org.apache.log4j.Logger;
+
 public class OOoBeanProxy {
 
+	private static final Logger log = Logger.getLogger(OOoBeanProxy.class);
+	
 	private ClassLoader classLoader;
 	private Object bean;
 	private Class<?> beanClass;
@@ -21,19 +25,20 @@ public class OOoBeanProxy {
 			beanClass = classLoader.loadClass("com.sun.star.comp.beans.OOoBean");
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("A classe OOoBean não foi encontrada, mensagem interna: " + e.getMessage());
+			String msg = "A classe OOoBean não foi encontrada, mensagem interna: " + e.getMessage(); 
+			log.error(msg, e);
+			throw new Exception(msg);
 		}
 		
 		try {
 			bean = beanClass.newInstance();
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("Erro ao instanciar um objeto da classe OOoBean, mensagem interna: " + e.getMessage());
+			String msg = "Erro ao instanciar um objeto da classe OOoBean, mensagem interna: " + e.getMessage(); 
+			log.error(msg, e);
+			throw new Exception(msg);
 		}
-	}	
-
+	}
 
 	public void stopOOoConnection() {
 		try {
@@ -127,7 +132,7 @@ public class OOoBeanProxy {
 			invoke(bean, "clear");
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Erro ao executar OOoBean.aquireSystemWindow(), mensagem interna: " + e.getMessage());
+			throw new RuntimeException("Erro ao executar OOoBean.clear(), mensagem interna: " + e.getMessage());
 		}
 		
 	}
