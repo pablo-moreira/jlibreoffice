@@ -79,8 +79,8 @@ import java.util.Vector;
 public final class InstallationFinder {
 
     private static final String SYSPROP_NAME = "com.sun.star.lib.loader.unopath";
-    private static final String ENVVAR_NAME = "UNO_PATH";
-    private static final String SOFFICE = "soffice"; // Unix/Linux only
+    public static final String UNO_PATH = "UNO_PATH";
+    public static final String SOFFICE = "soffice"; // Unix/Linux only
     private static final List<WinRegKeyName> WIN_REGISTRY;
     
     static {
@@ -124,7 +124,7 @@ public final class InstallationFinder {
         if ( path == null ) {
             // get the installation path from the UNO_PATH environment variable
             // (all platforms, not working for Java 1.3.1 and Java 1.4)
-            path = getPathFromEnvVar( ENVVAR_NAME );
+            path = getPathFromEnvVar( UNO_PATH );
             if ( path == null ) {
                 String osname = null;
                 try {

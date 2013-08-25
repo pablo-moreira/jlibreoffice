@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.googlecode.jlibreoffice.util.CustomURLClassLoader;
 import com.googlecode.jlibreoffice.util.SystemUtils;
 import com.sun.star.lib.loader.InstallationFinder;
@@ -16,6 +18,7 @@ import com.sun.star.lib.loader.InstallationFinder;
 public class InstallationConfigs {
 
 	private static InstallationConfigs instance;
+	private static Logger log = Logger.getLogger(InstallationConfigs.class);
 
 	private CustomURLClassLoader classLoader;
 	private String unoPath;
@@ -33,13 +36,15 @@ public class InstallationConfigs {
 											
 			// Verifica se encontrou o uno_path
 			if (unoPath == null || unoPath.equals("")) {
-				throw new Exception("O caminho para o diretório de instalação do LibreOffice não foi encontrado!");
+				String msg = "O diretório de instalação do LibreOffice não foi encontrado!";
+				log.error(msg);
+				throw new Exception(msg);
 			}
-			
-			System.out.println("\nUNO_PATH ENCONTRADO:\n - " + unoPath);
-			
-			SystemUtils.putEnvVar("UNO_PATH", unoPath);
-				
+
+			log.info(InstallationFinder.UNO_PATH + " = " + unoPath);
+
+			SystemUtils.putEnvVar(InstallationFinder.UNO_PATH, unoPath);
+
 			instance = new InstallationConfigs(unoPath);	
     	}
 	}	
@@ -129,8 +134,6 @@ public class InstallationConfigs {
 
 		this.classLoader = new CustomURLClassLoader(urls.toArray(new URL[]{}), InstallationConfigs.class.getClassLoader());
 		this.classLoader.addResourcePath(new File(getUnoPath()).toURI().toURL());
-		
-		//this.classLoader = new URLClassLoader(urls.toArray(new URL[]{}), InstallationConfigs.class.getClassLoader());		
 	}
 
 	public URLClassLoader getClassLoader() {
