@@ -2,6 +2,7 @@ package com.googlecode.jlibreoffice;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.googlecode.jlibreoffice.installation.InstallationConfigs;
+import com.googlecode.jlibreoffice.menu.MenuBuilder;
 
 
 public class JLibreOfficeTest {
@@ -21,11 +23,25 @@ public class JLibreOfficeTest {
 		
 		try {
 			final JLibreOffice jLibreOffice = new JLibreOffice(InstallationConfigs.getInstance().getClassLoader());
+			jLibreOffice.setMenuBarVisible(false);
+			jLibreOffice.setToolBarVisible(false);
+			jLibreOffice.setStandardBarVisible(false);
+			
+			MenuBuilder mb = new MenuBuilder(jLibreOffice);
+			
+			MenuBar menuBar = new MenuBar();
+			
+			menuBar.add(mb.buildEditMenu());
+			menuBar.add(mb.buildInsertMenu());
+			menuBar.add(mb.buildFormatMenu());
+			menuBar.add(mb.buildTableMenu());
 			
 			JFrame frame = new JFrame();
 			frame.setTitle("Teste");
 			frame.setSize(800, 600);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			frame.setMenuBar(menuBar);
 
 			initPnButtons(frame, jLibreOffice);
 						
