@@ -3,6 +3,7 @@
 #####################
 
 MICROSOFT WINDOWS XP PROFESSIONAL
+ - BrOffice 2.2.0
  - BrOffice 2.4.0
  - BrOffice 3.0.0
  - BrOffice 3.0.1
