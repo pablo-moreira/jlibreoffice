@@ -47,10 +47,9 @@ public class JLibreOfficeTest {
 				}
 			});
 			menuBar.getMenu(0).add(menuItem);
-			
+
 			frame.setMenuBar(menuBar);
-			
-						
+				
 			frame.add(jLibreOffice.getBean().getContainer(), BorderLayout.CENTER);            
             			
 			frame.setVisible(true);
