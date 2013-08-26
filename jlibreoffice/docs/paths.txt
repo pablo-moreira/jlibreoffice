@@ -8,6 +8,14 @@
 	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes; 
 	 - C:\Arquivos de programas\BrOffice.org 2.2\program
 
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\juh.jar
+
 -------------------
 -- Br-Office 2.4 --
 -------------------
@@ -17,7 +25,7 @@
 	LIBS
 	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes;
 	 - C:\Arquivos de programas\BrOffice.org 2.4\program
-
+	 
 -------------------
 -- Br-Office 3.0 --
 -------------------
