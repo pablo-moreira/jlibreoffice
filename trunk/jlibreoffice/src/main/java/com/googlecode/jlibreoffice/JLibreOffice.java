@@ -139,6 +139,10 @@ public class JLibreOffice {
 		return bean.exportToPdf();
 	}
 	
+	public void execute(String cmd) throws Exception {
+		bean.execute(cmd, null);
+	}
+	
 	public void execute(String cmd, Object[] propertyValues) throws Exception {
 		bean.execute(cmd, propertyValues);
 	}
@@ -227,5 +231,9 @@ public class JLibreOffice {
 
 	public ResourceBundle getMessageBundle() {
 		return messageBundle;
-	}	
+	}
+
+	public void clear() {
+		bean.clear();		
+	}
 }
