@@ -17,10 +17,10 @@ public class JLibreOfficeTest {
 	
 	public static void main(String[] args) throws Exception {
 		
-		InstallationConfigs.iniciar();
-		URLClassLoader classLoader = InstallationConfigs.getInstance().getClassLoader();
-		
 		try {
+			InstallationConfigs.iniciar();
+			URLClassLoader classLoader = InstallationConfigs.getInstance().getClassLoader();
+			
 			final JLibreOffice jLibreOffice = new JLibreOffice(classLoader);
 			jLibreOffice.setMenuBarVisible(false);
 			jLibreOffice.setToolBarVisible(false);
@@ -66,5 +66,4 @@ public class JLibreOfficeTest {
 			e.printStackTrace();
 		}		
 	}
-
 }
