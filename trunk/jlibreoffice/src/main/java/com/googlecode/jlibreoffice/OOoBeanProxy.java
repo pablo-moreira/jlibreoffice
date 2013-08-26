@@ -103,6 +103,15 @@ public class OOoBeanProxy {
 		}
 	}
 	
+	public boolean isModifiedDocument() {
+		try {
+			return (Boolean) invoke(getDocument(), "isModified");
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.isModifiedDocument(), mensagem interna: " + e.getMessage());
+		}
+	}
+	
 	public void loadFromURL(String url) {
 		try {
             Method methLoad = beanClass.getMethod("loadFromURL", String.class, getPropertyValueArrayClass());
