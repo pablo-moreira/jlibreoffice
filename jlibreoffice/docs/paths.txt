@@ -142,9 +142,9 @@
 	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\java_uno.jar
 	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\juh.jar
 
----------------------
--- LibreOffice 3.3 --
----------------------
+-----------------------
+-- LibreOffice 3.3.0 --
+-----------------------
 	UNO_PATH
 	 - C:\Arquivos de programas\LibreOffice 3\program
 
@@ -159,10 +159,28 @@
 	 - C:\Arquivos de programas\LibreOffice 3\URE\java\ridl.jar
 	 - C:\Arquivos de programas\LibreOffice 3\URE\java\java_uno.jar
 	 - C:\Arquivos de programas\LibreOffice 3\URE\java\juh.jar
+	 	 
+-----------------------
+-- LibreOffice 3.6.7 --
+-----------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\LibreOffice 3.6\program
 
----------------------
--- LibreOffice 4.0 --
----------------------
+	LIB PATH
+	 - C:\Arquivos de programas\LibreOffice 3.6\URE\bin
+	 - C:\Arquivos de programas\LibreOffice 3.6\program
+
+	JAR PATH
+	 - C:\Arquivos de programas\LibreOffice 3.6\Basis\program\classes\officebean.jar
+	 - C:\Arquivos de programas\LibreOffice 3.6\Basis\program\classes\unoil.jar
+	 - C:\Arquivos de programas\LibreOffice 3.6\URE\java\jurt.jar
+	 - C:\Arquivos de programas\LibreOffice 3.6\URE\java\ridl.jar
+	 - C:\Arquivos de programas\LibreOffice 3.6\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\LibreOffice 3.6\URE\java\juh.jar
+
+-----------------------
+-- LibreOffice 4.0.1 --
+-----------------------
 	UNO_PATH
 	 - C:\Arquivos de programas\LibreOffice 4.0\program
 
@@ -178,7 +196,23 @@
 	 - C:\Arquivos de programas\LibreOffice 4.0\URE\java\java_uno.jar
 	 - C:\Arquivos de programas\LibreOffice 4.0\URE\java\juh.jar
 
+-----------------------
+-- LibreOffice 4.1.0 --
+-----------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\LibreOffice 4\program
 
+	LIB PATH
+	 - C:\Arquivos de programas\LibreOffice 4\URE\bin
+	 - C:\Arquivos de programas\LibreOffice 4\program
+	 
+	JAR PATH	 
+	 - C:\Arquivos de programas\LibreOffice 4\program\classes\officebean.jar
+	 - C:\Arquivos de programas\LibreOffice 4\program\classes\unoil.jar
+	 - C:\Arquivos de programas\LibreOffice 4\URE\java\jurt.jar
+	 - C:\Arquivos de programas\LibreOffice 4\URE\java\ridl.jar
+	 - C:\Arquivos de programas\LibreOffice 4\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\LibreOffice 4\URE\java\juh.jar
 
 
 ------------------
