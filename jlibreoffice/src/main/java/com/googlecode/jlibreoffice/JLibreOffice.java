@@ -105,7 +105,7 @@ public class JLibreOffice {
 		
 		try {
 			// !!! Importante - Faz nao aparecer tela de restauracao de arquivos
-			System.setProperty("com.sun.star.officebean.Options", "--norestore");
+			System.setProperty("com.sun.star.officebean.Options", "-norestore");
 					
 			messageBundle = ResourceBundle.getBundle(JLibreOfficeConstants.DEFAULT_MESSAGE_BUNDLE);
 			

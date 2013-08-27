@@ -79,11 +79,11 @@ public class InstallationConfigs {
 			
 			dirs.add(new File(unoPathRoot + "\\program"));
 			dirs.add(new File(unoPathRoot + "\\program\\classes"));
-			dirs.add(new File(unoPathRoot + "\\URE\\bin"));
 			dirs.add(new File(unoPathRoot + "\\Basis\\program"));			
+			dirs.add(new File(unoPathRoot + "\\Basis\\program\\classes"));
 			dirs.add(new File(unoPathRoot + "\\URE\\bin"));
 			dirs.add(new File(unoPathRoot + "\\URE\\java\\"));
-			dirs.add(new File(unoPathRoot + "\\Basis\\program"));
+			
 			
 			initializeClassloader(libs, dirs);
 		}
@@ -108,16 +108,16 @@ public class InstallationConfigs {
 		}
 	}
 	
-	private void initializeClassloader(List<DependencyPath> libs, List<File> dirs) throws Exception {
+	private void initializeClassloader(List<DependencyPath> dependencies, List<File> dirs) throws Exception {
 
 		Set<URL> urls = new HashSet<URL>();
 		
-		for (DependencyPath lib : libs) {
+		for (DependencyPath dependency : dependencies) {
 
 			URL found = null;
 			
 			for (File dir : dirs) {
-				File file = new File(dir, lib.getDependencyName());
+				File file = new File(dir, dependency.getDependencyName());
 				if (file.exists()) {
 					found = file.toURI().toURL();
 					break;
@@ -127,8 +127,8 @@ public class InstallationConfigs {
 			if (found != null) {
 				urls.add(found);
 			}
-			else if (lib.isRequired()) { 
-				throw new Exception(MessageFormat.format("A biblioteca {0} não foi encontrada!", lib.getDependencyName()));
+			else if (dependency.isRequired()) { 
+				throw new Exception(MessageFormat.format("A biblioteca {0} não foi encontrada!", dependency.getDependencyName()));
 			}
 		}
 
