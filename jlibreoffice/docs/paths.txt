@@ -1,6 +1,6 @@
--------------------
--- Br-Office 2.2 --
--------------------
+---------------------
+-- Br-Office 2.2.0 --
+---------------------
 	UNO_PATH
 	 - C:\Arquivos de programas\BrOffice.org 2.2\program
 
@@ -16,35 +16,131 @@
 	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\java_uno.jar
 	 - C:\Arquivos de programas\BrOffice.org 2.2\program\classes\juh.jar
 
--------------------
--- Br-Office 2.4 --
--------------------
+---------------------
+-- Br-Office 2.4.0 --
+---------------------
 	UNO_PATH
 	 - C:\Arquivos de programas\BrOffice.org 2.4\program
 
 	LIBS
 	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes;
 	 - C:\Arquivos de programas\BrOffice.org 2.4\program
-	 
--------------------
--- Br-Office 3.0 --
--------------------
+
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 2.4\program\classes\juh.jar
+
+---------------------
+-- Br-Office 3.0.0 --
+---------------------
 	UNO_PATH
 	 - C:\Arquivos de programas\BrOffice.org 3\program
 
 	LIBS
-	- C:\Arquivos de programas\BrOffice.org 3\URE\bin;
-	- C:\Arquivos de programas\BrOffice.org 3\Basis\program
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\bin;
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program
 
--------------------
--- Br-Office 3.2 --
--------------------
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\juh.jar
+
+---------------------
+-- Br-Office 3.0.1 --
+---------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	LIBS
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\bin;
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program
+
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\juh.jar
+
+---------------------
+-- Br-Office 3.1.0 --
+---------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	LIBS
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\bin;
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program
+
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\juh.jar
+
+---------------------
+-- Br-Office 3.1.1 --
+---------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	LIBS
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\bin;
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program
+
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\juh.jar
+
+---------------------
+-- Br-Office 3.2.0 --
+---------------------
 	UNO_PATH
 	 - C:\Arquivos de programas\BrOffice.org 3\program
 
 	LIBS
 	 - C:\Arquivos de programas\BrOffice.org 3\URE\bin;
 	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\juh.jar
+
+---------------------
+-- Br-Office 3.2.1 --
+---------------------
+	UNO_PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	LIBS
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\bin;
+	 - C:\Arquivos de programas\BrOffice.org 3\program
+
+	JAR PATH
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\officebean.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\Basis\program\classes\unoil.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\jurt.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\ridl.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\java_uno.jar
+	 - C:\Arquivos de programas\BrOffice.org 3\URE\java\juh.jar
 
 ---------------------
 -- LibreOffice 3.3 --
