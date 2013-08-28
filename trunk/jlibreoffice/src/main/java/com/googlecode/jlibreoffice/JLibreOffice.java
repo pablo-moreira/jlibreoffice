@@ -162,7 +162,7 @@ public class JLibreOffice {
 	}
 	
 	public boolean isConnected() {
-		if (bean != null && bean.isOOoConnected()) {
+		if (isInitialized() && bean.isOOoConnected()) {
 			return true;
 		}
 		else {
