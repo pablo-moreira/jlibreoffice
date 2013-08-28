@@ -44,6 +44,10 @@ public class InstallationConfigs {
 			log.info(InstallationFinder.UNO_PATH + " = " + unoPath);
 
 			SystemUtils.putEnvVar(InstallationFinder.UNO_PATH, unoPath);
+			
+			if (SystemUtils.isOsLinux()) {
+				System.setProperty("sun.awt.xembedserver", "true");
+			}
 
 			instance = new InstallationConfigs(unoPath);	
     	}
