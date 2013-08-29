@@ -2,6 +2,7 @@ package com.googlecode.jlibreoffice;
 
 import java.awt.Container;
 import java.awt.LayoutManager;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -110,6 +111,17 @@ public class OOoBeanProxy {
 		catch (Exception e) {
 			throw new RuntimeException("Erro ao executar OOoBean.isModifiedDocument(), mensagem interna: " + e.getMessage());
 		}
+	}
+	
+	public void loadFromStream(InputStream is) {
+		try {
+            Method methLoad = beanClass.getMethod("loadFromStream", InputStream.class, getPropertyValueArrayClass());
+            
+            methLoad.invoke(bean, is, null);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Erro ao executar OOoBean.loadFromStream(), mensagem interna: " + e.getMessage());
+		}		
 	}
 	
 	public void loadFromURL(String url) {
