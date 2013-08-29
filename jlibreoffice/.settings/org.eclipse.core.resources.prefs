@@ -1,5 +1,6 @@
-#Sat Aug 24 19:55:21 AMT 2013
+#Thu Aug 29 06:37:35 AMT 2013
 eclipse.preferences.version=1
-encoding//src/main/java/com/googlecode/jlibreoffice/resources/MessageBundle.properties=UTF-8
-encoding//src/main/java/com/googlecode/jlibreoffice/resources/MessageBundle_pt.properties=UTF-8
+encoding//src/main/resources/MessageBundle.properties=UTF-8
+encoding//src/main/resources/MessageBundle_pt.properties=UTF-8
+encoding//src/main/resources/MessageBundle_pt_BR.properties=UTF-8
 encoding/<project>=UTF-8
