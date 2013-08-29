@@ -2,9 +2,15 @@ package com.googlecode.jlibreoffice;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
+
+import com.googlecode.jlibreoffice.util.SystemUtils;
 
 public class JLibreOffice {
 	
@@ -105,9 +111,27 @@ public class JLibreOffice {
 		
 		try {
 			// !!! Importante - Faz nao aparecer tela de restauracao de arquivos
-			System.setProperty("com.sun.star.officebean.Options", "-norestore");
-					
-			messageBundle = ResourceBundle.getBundle(JLibreOfficeConstants.DEFAULT_MESSAGE_BUNDLE);
+			if (SystemUtils.isOsLinux()) {
+				System.setProperty("com.sun.star.officebean.Options", "--norestore");
+			}
+			else {
+				System.setProperty("com.sun.star.officebean.Options", "-norestore");
+			}
+			
+			try {
+				messageBundle = ResourceBundle.getBundle(JLibreOfficeConstants.DEFAULT_MESSAGE_BUNDLE);
+			}
+			catch (Exception e) {				
+				log.error(e);
+				try {
+					InputStream is = getClass().getResourceAsStream("/com/googlecode/jlibreoffice/resources/MessageBundle.properties");				
+					InputStreamReader reader = new InputStreamReader(is, Charset.forName("UTF-8"));
+					messageBundle = new PropertyResourceBundle(reader);
+				}
+				catch (Exception e2) {
+					log.error(e2);
+				}
+			}
 			
 			bean = new OOoBeanProxy(classLoader);
 			
