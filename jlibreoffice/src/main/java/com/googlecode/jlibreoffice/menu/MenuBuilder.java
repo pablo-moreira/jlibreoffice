@@ -290,10 +290,8 @@ public class MenuBuilder {
 					if(retorno == JFileChooser.APPROVE_OPTION) {
 					
 						File file = fc.getSelectedFile();
-								
-						String url = "file:///" + file.getAbsolutePath().replace('\\', '/');
 						
-						getJLibreOffice().open(url);
+						getJLibreOffice().open(file);
 					}
 				} 
 				catch (Exception e) {					
