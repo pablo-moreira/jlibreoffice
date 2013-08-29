@@ -2,6 +2,8 @@ package com.googlecode.jlibreoffice;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -145,6 +147,20 @@ public class JLibreOffice {
 		}
 	}
 
+	public void open(File arquivo) throws Exception {
+		
+		try {
+			FileInputStream fis = new FileInputStream(arquivo);			
+			bean.loadFromStream(fis);       
+            bean.aquireSystemWindow();
+		}
+		catch (Exception e)	{
+			log.error("JLibreOffice.open: " + e.getMessage());
+			e.printStackTrace();			
+			throw new Exception(e.getMessage());
+		}
+	}
+	
 	public void open(String url) throws Exception {
 
 		try {
