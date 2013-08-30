@@ -164,7 +164,6 @@ public class JLibreOffice {
 	public void open(String url) throws Exception {
 
 		try {
-            //Get the office process to load the URL
             bean.loadFromURL(url);         
             bean.aquireSystemWindow();
 		}
