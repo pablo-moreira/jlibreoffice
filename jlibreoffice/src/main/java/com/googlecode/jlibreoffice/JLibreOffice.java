@@ -3,7 +3,6 @@ package com.googlecode.jlibreoffice;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -147,22 +146,18 @@ public class JLibreOffice {
 		}
 	}
 
-	public void open(File arquivo) throws Exception {
+	public void open(File file) throws Exception {
 		
-		try {
-			FileInputStream fis = new FileInputStream(arquivo);			
-			bean.loadFromStream(fis);       
-            bean.aquireSystemWindow();
-		}
-		catch (Exception e)	{
-			log.error("JLibreOffice.open: " + e.getMessage());
-			e.printStackTrace();			
-			throw new Exception(e.getMessage());
-		}
+		String url = getFileURL(file);
+
+		open(url);
 	}
 	
-	public void open(String url) throws Exception {
-
+    private static String getFileURL(File file) {
+        return file.getAbsoluteFile().toURI().toString().replaceFirst("\\A[Ff][Ii][Ll][Ee]:/(?=[^/]|\\z)", "file:///");
+    }
+	
+	private void open(String url) throws Exception {
 		try {
             bean.loadFromURL(url);         
             bean.aquireSystemWindow();

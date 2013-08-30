@@ -70,7 +70,7 @@ final class WinRegKey {
     static {        
         try {
             ClassLoader cl = WinRegKey.class.getClassLoader();            
-            InputStream is = cl.getResourceAsStream( "win/unowinreg.dll" );
+            InputStream is = cl.getResourceAsStream( "com/googlecode/jlibreoffice/lib/unowinreg.dll" );
             if ( is != null ) {                
 
             	File dirTmp = new File(System.getProperty("java.io.tmpdir"));
