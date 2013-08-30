@@ -49,7 +49,7 @@ public class InstallationConfigs {
 				System.setProperty("sun.awt.xembedserver", "true");
 			}
 
-			instance = new InstallationConfigs(unoPath);	
+			instance = new InstallationConfigs(unoPath);
     	}
 	}	
 
@@ -124,6 +124,7 @@ public class InstallationConfigs {
 				File file = new File(dir, dependency.getDependencyName());
 				if (file.exists()) {
 					found = file.toURI().toURL();
+					log.debug(MessageFormat.format("A dependência ({0}) foi encontrada em: {1}", dependency.getDependencyName(), file.toString()));
 					break;
 				}
 			}
@@ -132,7 +133,7 @@ public class InstallationConfigs {
 				urls.add(found);
 			}
 			else if (dependency.isRequired()) { 
-				throw new Exception(MessageFormat.format("A biblioteca {0} não foi encontrada!", dependency.getDependencyName()));
+				throw new Exception(MessageFormat.format("A dependência {0} não foi encontrada!", dependency.getDependencyName()));
 			}
 		}
 
