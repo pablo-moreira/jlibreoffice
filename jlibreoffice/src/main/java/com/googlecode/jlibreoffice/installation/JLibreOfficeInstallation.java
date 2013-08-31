@@ -15,15 +15,15 @@ import com.googlecode.jlibreoffice.util.CustomURLClassLoader;
 import com.googlecode.jlibreoffice.util.SystemUtils;
 import com.sun.star.lib.loader.InstallationFinder;
 
-public class InstallationConfigs {
+public class JLibreOfficeInstallation {
 
-	private static InstallationConfigs instance;
-	private static Logger log = Logger.getLogger(InstallationConfigs.class);
-
+	private static JLibreOfficeInstallation instance;
+	private static Logger log = Logger.getLogger(JLibreOfficeInstallation.class);
+	
 	private CustomURLClassLoader classLoader;
 	private String unoPath;
 	
-	public static InstallationConfigs getInstance() {
+	public static JLibreOfficeInstallation getInstance() {
 		return instance;
 	}	
 			    
@@ -49,11 +49,11 @@ public class InstallationConfigs {
 				System.setProperty("sun.awt.xembedserver", "true");
 			}
 
-			instance = new InstallationConfigs(unoPath);
+			instance = new JLibreOfficeInstallation(unoPath);
     	}
 	}	
 
-	private InstallationConfigs(String unoPath) throws Exception {
+	private JLibreOfficeInstallation(String unoPath) throws Exception {
 		
 		this.unoPath = unoPath;
 		
@@ -114,31 +114,40 @@ public class InstallationConfigs {
 	
 	private void initializeClassloader(List<DependencyPath> dependencies, List<File> dirs) throws Exception {
 
-		Set<URL> urls = new HashSet<URL>();
+		Set<URL> jars = new HashSet<URL>();
+		Set<File> libs = new HashSet<File>();
 		
 		for (DependencyPath dependency : dependencies) {
 
-			URL found = null;
+			File found = null;
 			
 			for (File dir : dirs) {
 				File file = new File(dir, dependency.getDependencyName());
 				if (file.exists()) {
-					found = file.toURI().toURL();
+					found = file;
 					log.debug(MessageFormat.format("A dependência ({0}) foi encontrada em: {1}", dependency.getDependencyName(), file.toString()));
 					break;
 				}
 			}
 			
 			if (found != null) {
-				urls.add(found);
+				if (dependency.isLib()) {
+					libs.add(found.getParentFile());
+				}
+				else {
+					jars.add(found.toURI().toURL());
+				}
 			}
 			else if (dependency.isRequired()) { 
 				throw new Exception(MessageFormat.format("A dependência {0} não foi encontrada!", dependency.getDependencyName()));
 			}
 		}
 
-		this.classLoader = new CustomURLClassLoader(urls.toArray(new URL[]{}), InstallationConfigs.class.getClassLoader());
-		this.classLoader.addResourcePath(new File(getUnoPath()).toURI().toURL());
+		StringBuilder newPath = new StringBuilder();
+		newPath.append(System.getProperty("java.library.path"));
+
+		this.classLoader = new CustomURLClassLoader(jars.toArray(new URL[]{}), JLibreOfficeInstallation.class.getClassLoader());
+		this.classLoader.setResourcePaths(libs);
 	}
 
 	public URLClassLoader getClassLoader() {
@@ -148,4 +157,8 @@ public class InstallationConfigs {
 	public String getUnoPath() {
     	return unoPath;
     }
+	
+	public File getUnoPathFile() {
+		return new File(getUnoPath());
+	}
 }

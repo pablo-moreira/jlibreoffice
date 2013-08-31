@@ -4,11 +4,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
+import java.util.Set;
 
 public class CustomURLClassLoader extends URLClassLoader {
-
-    private ArrayList<URL> resourcePaths;
+	
+    private Set<File> resourcePaths;
 
     public CustomURLClassLoader( URL[] urls, ClassLoader urlClassLoader) {
         super( urls , urlClassLoader );
@@ -43,34 +43,36 @@ public class CustomURLClassLoader extends URLClassLoader {
         return c;
     }
 
-    public void addResourcePath(URL rurl) {
-        if (resourcePaths == null) resourcePaths = new ArrayList<URL>();
-        resourcePaths.add(rurl);
+    public void setResourcePaths(Set<File> dirs) {        
+        resourcePaths = dirs;
     }
 
     public URL getResource(String name) {
-        if (resourcePaths == null) return null;
+        
+    	if (resourcePaths == null) {
+    		return null;
+    	}
 
         URL result = super.getResource(name);
+        
         if (result != null) {
             return result;
         }
 
-        for (URL u : resourcePaths) {
-            if (u.getProtocol().startsWith("file")){
-                try {
-                    File f1 = new File(u.getPath());
-                    File f2 = new File(f1, name);
-                    if (f2.exists()) {
-                        return new URL(f2.toURI().toASCIIString());
-                    }
-                } catch (MalformedURLException e1) {
-                    System.err.println("malformed url: "+e1.getMessage());
-                    continue;
-                }
-            }
+        for (File dir : resourcePaths) {
+            
+			File lib = new File(dir, name);
+            
+			try {
+				if (lib.exists()) {
+					return new URL(lib.toURI().toASCIIString());                
+				}
+			}
+        	catch (MalformedURLException e1) {
+                System.err.println("malformed url: " + e1.getMessage());
+                continue;
+            }            
         }
         return null;
     }
-
 }

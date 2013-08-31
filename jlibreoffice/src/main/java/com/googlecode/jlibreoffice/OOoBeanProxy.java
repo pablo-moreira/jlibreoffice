@@ -46,7 +46,9 @@ public class OOoBeanProxy {
 			invoke(bean, "stopOOoConnection");
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Erro ao executar OOoBean.stopOOoConnection(), mensagem interna: " + e.getMessage());
+			String msg = "Erro ao executar OOoBean.stopOOoConnection(), mensagem interna: " + e.getMessage();
+			log.error(msg, e);
+			throw new RuntimeException(msg);
 		}
 	}
 	
@@ -124,14 +126,15 @@ public class OOoBeanProxy {
 		}		
 	}
 	
-	public void loadFromURL(String url) {
+	public void loadFromURL(final String url) {
 		try {
-            Method methLoad = beanClass.getMethod("loadFromURL", String.class, getPropertyValueArrayClass());
-
-            methLoad.invoke(bean, url, null);
+			Method methLoad = beanClass.getMethod("loadFromURL", String.class, getPropertyValueArrayClass());
+			methLoad.invoke(bean, url, null);
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Erro ao executar OOoBean.loadFromURL(), mensagem interna: " + e.getMessage());
+			String msg = "Erro ao executar OOoBean.loadFromURL(), mensagem interna: " + e.getMessage();
+			log.error(msg, e);
+			throw new RuntimeException(msg);
 		}
 	}
 	

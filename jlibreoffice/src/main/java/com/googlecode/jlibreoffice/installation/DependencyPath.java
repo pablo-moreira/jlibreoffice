@@ -15,8 +15,16 @@ public class DependencyPath {
 	public String getDependencyName() {
 		return dependencyName;
 	}
+	
+	public boolean isJar() {
+		return getDependencyName().endsWith(".jar");
+	}
 
 	public boolean isRequired() {
 		return required;
+	}
+
+	public boolean isLib() {
+		return !isJar();
 	}
 }
