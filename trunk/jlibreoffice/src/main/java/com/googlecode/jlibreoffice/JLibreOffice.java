@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -103,12 +104,14 @@ public class JLibreOffice {
 
 	private OOoBeanProxy bean;
 	private ResourceBundle messageBundle;
+	private URLClassLoader classLoader;
 
-	public JLibreOffice(ClassLoader classLoader) {		
-		initialize(classLoader);
+	public JLibreOffice(URLClassLoader classLoader) {
+		this.classLoader = classLoader;
+		init();
 	}
 		
-	private void initialize(ClassLoader classLoader) {
+	private void init() {
 		
 		try {
 			// !!! Importante - Faz nao aparecer tela de restauracao de arquivos
@@ -119,20 +122,7 @@ public class JLibreOffice {
 				System.setProperty("com.sun.star.officebean.Options", "-norestore");
 			}
 			
-			try {
-				messageBundle = ResourceBundle.getBundle(JLibreOfficeConstants.DEFAULT_MESSAGE_BUNDLE);
-			}
-			catch (Exception e) {				
-				log.error(e);
-				try {
-					InputStream is = getClass().getResourceAsStream("/com/googlecode/jlibreoffice/resources/MessageBundle.properties");				
-					InputStreamReader reader = new InputStreamReader(is, Charset.forName("UTF-8"));
-					messageBundle = new PropertyResourceBundle(reader);
-				}
-				catch (Exception e2) {
-					log.error(e2);
-				}
-			}
+			initMessageBundle();
 			
 			bean = new OOoBeanProxy(classLoader);
 			
@@ -144,6 +134,23 @@ public class JLibreOffice {
 			bean = null;
 			log.error("Erro ao iniciar a conexao com o LibreOffice, mensagem interna: " + (e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName()));
 		}
+	}
+	
+	private void initMessageBundle() {
+		try {
+			messageBundle = ResourceBundle.getBundle(JLibreOfficeConstants.DEFAULT_MESSAGE_BUNDLE);
+		}
+		catch (Exception e) {				
+			log.error(e);
+			try {
+				InputStream is = getClass().getResourceAsStream("/com/googlecode/jlibreoffice/resources/MessageBundle.properties");				
+				InputStreamReader reader = new InputStreamReader(is, Charset.forName("UTF-8"));
+				messageBundle = new PropertyResourceBundle(reader);
+			}
+			catch (Exception e2) {
+				log.error(e2);
+			}
+		}		
 	}
 
 	public void open(File file) throws Exception {
@@ -248,8 +255,6 @@ public class JLibreOffice {
 		}
 		bean.stopOOoConnection();
 	}
-	
-	
 
 	public void setMenuBarVisible(boolean value) {
 		bean.setMenuBarVisible(value);
