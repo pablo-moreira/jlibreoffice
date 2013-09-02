@@ -156,6 +156,8 @@ public class JLibreOffice {
 	public void open(File file) throws Exception {
 		
 		String url = getFileURL(file);
+		
+		log.debug(url);
 
 		open(url);
 	}
