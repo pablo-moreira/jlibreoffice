@@ -99,7 +99,6 @@ public class JLibreOfficeInstallation {
 
 			List<File> dirs = new ArrayList<File>();
 
-			dirs.add(new File(unoPathRoot + "/basis-link/program/"));
 			dirs.add(new File(unoPathRoot + "/program/"));
 			dirs.add(new File(unoPathRoot + "/program/classes/"));
 			dirs.add(new File(unoPathRoot + "/ure-link/share/java/"));
@@ -142,9 +141,6 @@ public class JLibreOfficeInstallation {
 				throw new Exception(MessageFormat.format("A dependência {0} não foi encontrada!", dependency.getDependencyName()));
 			}
 		}
-
-		StringBuilder newPath = new StringBuilder();
-		newPath.append(System.getProperty("java.library.path"));
 
 		this.classLoader = new CustomURLClassLoader(jars.toArray(new URL[]{}), JLibreOfficeInstallation.class.getClassLoader());
 		this.classLoader.setResourcePaths(libs);
