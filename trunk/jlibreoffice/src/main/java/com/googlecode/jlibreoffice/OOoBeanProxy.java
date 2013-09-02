@@ -126,7 +126,7 @@ public class OOoBeanProxy {
 		}		
 	}
 	
-	public void loadFromURL(final String url) {
+	public void loadFromURL(String url) {
 		try {
 			Method methLoad = beanClass.getMethod("loadFromURL", String.class, getPropertyValueArrayClass());
 			methLoad.invoke(bean, url, null);
