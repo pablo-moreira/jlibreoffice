@@ -37,7 +37,6 @@ public class JLibreOfficeInstallation {
 			// Verifica se encontrou o uno_path
 			if (unoPath == null || unoPath.equals("")) {
 				String msg = "O diretório de instalação do LibreOffice não foi encontrado!";
-				log.error(msg);
 				throw new Exception(msg);
 			}
 
