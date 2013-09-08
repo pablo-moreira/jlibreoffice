@@ -234,7 +234,6 @@ public final class InstallationFinder {
             	
             }        	
 		}
-        System.err.println("Erro: O caminho de instalação do OpenOffice não foi encontrado no registro do Windows");
         return null;
     }
  
